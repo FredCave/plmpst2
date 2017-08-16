@@ -1,0 +1,21 @@
+
+Below the black layer (on top of the work) to increase legibility there is: 
+1.	white layer 50% opacity in blending mode overlay.
+
+
+Max opacity: 95%
+
+CHECK IF AUDIO WORKS ON MOBILE
+
+no nav bars on anti selfie club
+
+playlist in mobile
+
+Accessing www.jerusalempalimpsest.com randomly loads one of the works as the starting point.
+
+•	The order of the works is predetermined — which work is followed by which work (will be sent by Danielle and Yair by Friday).
+
+•	Each sub-domain (work) would contain its on OG metadata (the content appearing when shared on social media). 
+og:image would include gifs,
+og:title would be unique for each work,
+og:description is identical on all pages (description text about Jerusalem Palimpsest).

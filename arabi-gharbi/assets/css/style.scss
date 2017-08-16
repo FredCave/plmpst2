@@ -1,0 +1,275 @@
+#wpadminbar {
+	display: none;
+}
+
+/****************************************
+
+	CSS RESET 
+
+****************************************/
+
+a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+
+/****************************************
+
+	GENERAL
+
+****************************************/
+
+html, body {
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	overflow: hidden;
+}
+
+#wrapper {
+	position: fixed;
+/*	z-index: 1;*/
+	top: 0;
+	width: 100%;
+	height: 100vh;
+}
+
+#wrapper img {
+	width: auto;
+	min-height: 100%;
+}
+
+#content_frame {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	// transition: width .5s, height .5s;
+	#youtube_playlist {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 26.25%;
+		height: 27.75%;
+		iframe {
+			width: 100%;
+			height: 100%;
+		}
+	}
+	.slideshow_wrapper {
+		position: absolute;	
+		background-repeat: no-repeat;	
+		background-size: cover;
+		background-position: center;
+    	filter: grayscale(100%);
+    	transition: filter 0.5s;
+		video.full_width {
+			width: 100%;
+			min-height: 100%;
+			height: auto;
+			position: absolute;
+			top: 50%;
+			transform: translateY( -50% );
+		}
+	}
+	#slideshow_1 {
+		z-index: 9;
+		top: 0;
+		left: 0;
+		width: 32.56%;
+		height: 71.52%;
+	}
+	#slideshow_2 {
+		bottom: 0;
+		left: 26.25%;
+		width: 38.65%;
+		height: 44.98%;
+	}
+	#slideshow_3 {
+		bottom: 0;
+		right: 0;
+		width: 35.1%;
+		height: 36.12%;
+	}
+	#slideshow_4 {
+		top: 0;
+		right: 0;
+		width: 30.15%;
+		height: 63.92%;
+	}
+	#webcam {
+		background: black;
+		position: absolute;
+		z-index: 9;
+		top: 0;
+		height: 54.57%;
+		width: 25%;
+		right: 25.67%;
+		overflow: hidden;
+		font-family: "FGrotesk", helvetica, arial, sans-serif;
+		font-size: 16px;
+		canvas {
+			border: 1px solid orange;
+			// background: black;
+			position: absolute;
+			// width: 100%;
+			height: 100%;
+			transform: translateX(-50%);
+			left: 50%;
+			bottom: 0;
+			display: none;
+		}
+		video {
+			border: 1px solid green;
+			position: absolute;
+			width: auto;
+			height: 100%;
+			left: 50%;
+			transform: translateX( -50% );	
+			display: none;		
+		}
+		div {
+			display: none;
+			text-align: center;
+			padding: 6px 10px;
+			line-height: 1.4;
+		}
+		#webcam_initial_image {
+			display: block;
+			height: 100%;
+			width: 100%;
+			background-repeat: no-repeat;	
+			background-size: cover;
+			background-position: center;	
+		}
+		#webcam_button_init {
+			position: absolute;
+			bottom: 64px;
+			left: 50%;
+			transform: translateX( -50% );
+			display: block;
+		}
+		.webcam_button {
+			cursor: pointer;
+			background-color: white;
+			padding: 4px 10px 8px 10px;
+			p {
+				border-bottom: 1px solid black;
+				display: inline; 
+			}
+		}
+		.webcam_button:hover {
+			background-color: #2962FF !important;
+			p {
+				color: white;
+				border-bottom: 1px solid white;
+			}
+		}
+		#webcam_access_screen {
+			background-color: #2962FF;
+			height: 100%;
+			width: 100%;
+			text-align: center;
+			p {
+				position: absolute;
+				color: white;
+				width: 60%;
+				top: 50%;
+    			left: 50%;
+    			transform: translateX(-50%) translateY(-50%);
+			}
+		}
+		#webcam_loaded_buttons {
+			// border: 2px solid orange;
+			position: absolute;
+			bottom: 16px;
+			left: 16px;
+			width: auto;
+			height: auto;
+			padding: 0;
+			text-align: left;
+			a {
+				text-decoration: none;
+			}
+			.webcam_button {
+				width: auto;
+				display: inline-block;
+				margin-top: 16px;
+				margin-right: 50%;
+			}
+			#webcam_button_close {
+				width: 34px;
+				height: 34px;
+				position: relative;
+				padding: 0;
+				margin-bottom: -4px;
+				margin-right: 100%;
+				img {
+					position: absolute;
+					top: 4px;
+					left: 4px;
+					width: 26px;
+					height: 26px;
+					min-height: 0;
+				}
+				.white {
+					display: none;
+				}
+				.blue {
+					display: block;
+				}
+			}
+			#webcam_button_close:hover {
+				.blue {
+					display: none;
+				}
+				.white {
+					display: block;
+				}				
+			}
+		}
+		#webcam_success {
+			background-color: #2962FF;
+			position: absolute;
+		    bottom: 16px;
+		    padding: 16px 0;
+		    width: 90%;
+		    left: 5%;
+		    color: white;
+		    p {
+		    	width: 80%;
+		    	margin-left: 10%;
+		    }
+		    .webcam_button {
+		    	border: 1px solid white;
+		    	background-color: #2962FF;
+		    	display: inline-block;
+		    	margin: 16px 7px 0 7px;
+		    	padding: 8px;
+		    	p {
+		    		margin: 0 10px;
+		    		border-bottom: 1px solid white;
+		    	}
+		    }
+		    .webcam_button:hover {
+		    	border: 1px solid white;
+		    	background-color: white !important;
+		    	p {
+		    		border-bottom: 1px solid #2962FF;
+		    		color: #2962FF;
+		    	}
+		    }
+		}
+	}
+}
+
+#frame {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	pointer-events: none;
+	opacity: 0.8;
+}

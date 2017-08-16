@@ -1,0 +1,465 @@
+
+$breaklarge: "max-width:1024px";
+$breakmedium: "max-width:910px";
+$breaksmall: "max-width:768px";
+
+/****************************************
+
+FONTS
+
+****************************************/
+
+@font-face {
+	font-family: "FGrotesk";
+	font-weight: normal;
+	font-style: normal;
+	src: url("assets/fonts/FGrotesk-Book.woff2") format("woff2"), url("assets/fonts/FGrotesk-Book.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Life";
+  font-weight: normal;
+  font-style: normal;
+  src: url("assets/fonts/Life-Roman.woff2") format("woff2"), url("assets/fonts/Life-Roman.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Life";
+  font-weight: bold;
+  font-style: normal;
+  src: url("assets/fonts/Life-Bold.woff2") format("woff2"), url("assets/fonts/Life-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Life";
+  font-weight: normal;
+  font-style: italic;
+  src: url("assets/fonts/Life-Italic.woff2") format("woff2"), url("assets/fonts/Life-Italic.woff") format("woff");
+}
+
+/****************************************
+
+GENERAL
+
+****************************************/
+
+#info_wrapper {
+	/*	border: 1px solid purple;*/
+	font-family: "FGrotesk", Helvetica, Arial;
+	font-size: 24px;
+	color: white;
+	line-height: 1.3;
+	text-shadow: 0px 0px 8px rgba(255,255,255,0.8);
+	position: absolute;
+	z-index: 99;
+	top: 24px;
+	left: 36px;
+	height: 60px;
+	width: calc( 100vw - 72px );
+	-webkit-transition: top 3s;
+	transition: top 3s;
+	pointer-events: none;
+	// @media ( $breaklarge ) {
+	// 	font-size: 2.343vw;
+	// }
+}
+
+#info_wrapper p {
+	/*	border: 1px solid red;	*/
+	margin-bottom: 8px;
+}
+
+#info_wrapper a {
+	color: white;
+	text-decoration: none;
+	pointer-events: auto;
+}
+
+#info_left, #info_right {
+	position: absolute;
+	top: 0;
+	width: 50%;
+}
+
+#info_right {
+	right: 0;
+	text-align: right;
+}
+
+#artist_info_show {
+	// border: 1px solid purple;
+	opacity: 1;
+	display: inline-block;
+}
+
+#main_info_hide,
+#artist_info_hide {
+	// border: 1px solid red;
+	width: 32px;
+	height: 32px;
+	position: fixed;
+	right: 36px;
+	top: 24px;
+	display: none;
+	img {
+		width: 100%;
+		height: 100%;
+		filter: drop-shadow( 0px 0px 8px rgba(255,255,255,0.8) );
+		transition: filter 1s;
+	}
+}
+
+#artist_info_hide {
+	right: inherit;
+}
+
+#artist_info_hide:hover {
+	img {
+		filter: drop-shadow( 0px 0px 8px rgba(255,255,255,1) );
+	}
+}
+
+#hover_area {
+	// border: 1px solid green;
+	position: fixed;
+	top: 0;
+	height: 130px;
+	width: 100%;
+}
+
+#info {
+	display: none;
+
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: auto;
+
+}
+
+#info_bg_wrapper {
+	background-color: rgba( 255, 255, 255, 0.1 );
+	// background-color: white; // TMP
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+}
+
+#info_bg_white_wrapper {
+	background-color: rgba(255,255,255,0.5);
+	position: fixed;
+	mix-blend-mode: overlay;
+	/* z-index: 9999999; */
+	height: 100vh;
+	top: 0;
+	width: 100%;
+}
+
+#info_text_wrapper {
+	background: rgba(0,0,0,0.85);
+	position: fixed;
+	font-family: "FGrotesk", Helvetica, Arial;
+	font-size: 24px;
+	color: white;
+	line-height: 1.3;
+	text-shadow: 0px 0px 4px rgba(255,255,255,0.8);
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	text-align: center;
+	mix-blend-mode: darken;
+	color: white;
+	@media ( $breaklarge ) {
+		font-size: 2.343vw;
+	}
+	@media ( $breakmedium ) {
+		font-size: 16pt;
+	}
+	#info_title {
+		margin-top: 100px;
+		margin-bottom: 80px;
+		border-bottom: 3px solid white;
+	    display: inline-block;
+	    width: auto;
+	}
+	.large_text,
+	.info_toggle {
+		font-size: 1.42em;
+	}
+	b, strong {
+		font-weight: bold;
+	}
+	i, em {
+		font-style: italic;
+	}
+	a {
+		color: white;
+		text-decoration: none;
+	}
+}
+
+#info_text_inner_wrapper,
+#info_title, 
+#info_meta {
+	width: calc( 100% - 320px );
+	max-width: 1060px;
+	display: inline-block;
+	text-align: left;
+	@media ( $breaksmall ) {
+		width: calc( 100% - 32px );
+	}
+}
+
+#info_mobile_enter {
+	margin: 80px 0;
+	text-align: center;
+	img {
+		margin-bottom: 20px;
+		filter: drop-shadow( 0px 0px 8px rgba(255,255,255,0.8) );
+		height: 72px;
+		width: auto;
+		transform-origin: 50% 50%;
+		animation: rotate 3s ease-in-out infinite alternate;
+	}
+}
+
+@keyframes rotate {
+    from { transform: rotate( 0deg ); }
+    to { transform: rotate( 90deg ); }
+}
+
+#info_meta {
+	margin-bottom: 100px;
+	span {
+		// border: 1px solid red;
+		opacity: 0;
+		transition: opacity 1s;
+		img {
+			height: 26px;
+	  		margin-bottom: -2px;
+	  		margin-right: 8px;
+	        filter: drop-shadow( 0px 0px 8px rgba(255,255,255,0.8) );
+		}
+	}
+	.meta_row:first-child span:first-child {
+		font-family: "Life", serif;
+		font-weight: bold;
+	}
+	.loaded {
+		opacity: 1;
+	}
+}
+
+#info_definition {
+	font-family: "Life", serif;	
+	margin-bottom: 96px;
+	.phonetic {
+		font-family: "FGrotesk", Helvetica, Arial;
+	}
+	.list_marker {
+		display: inline-block;
+		width: 82px;
+		vertical-align: top;
+		text-align: center;
+	}
+	.list_content {
+		display: inline-block;
+		width: calc( 100% -  84px );
+		vertical-align: top;
+	}
+}
+
+#info_main_text {
+	margin-bottom: 192px;
+	p {
+		margin-bottom: 64px;
+	}
+}
+
+.info_toggle {
+	border-bottom: 3px solid white;
+	display: inline-block;
+	margin-bottom: 48px;
+	cursor: pointer;
+}
+
+#info_works, 
+#info_colophon, 
+#info_mekudeshet_text {
+	// height: 0;
+	// overflow: hidden;
+	margin-bottom: 96px;
+}
+
+#info_works {
+	column-count: 2;
+	a {
+		border-bottom: 2px solid white;
+	}
+}
+
+#info_colophon {
+	column-count: 2;
+	p {
+		margin-bottom: 24px;
+	}
+	.title {
+		border-bottom: 2px solid white;	
+	}
+}
+
+#info_mekudeshet_text {
+	margin-bottom: 48px;
+}
+
+#info_mekudeshet_share {
+	margin-bottom: 192px;
+	height: 24px;
+	li {
+		display: inline-block;
+		height: 24px;
+		width: auto;
+		margin-right: 24px;
+		img {
+			height: 24px;
+			width: auto;
+			margin-bottom: -4px;
+		}
+	}
+}
+
+#artist_info {
+	// border: 1px solid purple;
+	position: absolute;
+	width: calc( 100% - 16.667% );
+	max-width: 1060px;
+	left: 8.33%;
+	top: 16.8vh;
+	font-family: "FGrotesk", Helvetica, Arial;
+	font-size: 24px;
+	color: white;
+	line-height: 1.3;
+	text-shadow: 0px 0px 8px rgba(255,255,255,0.8);
+	display: none;
+	@media ( $breaklarge ) {
+		font-size: 2.343vw;
+	}
+	@media ( $breakmedium ) {
+		font-size: 16pt;
+	}
+	.artist_info_title {
+		border-bottom: 2px solid white;
+		line-height: 1.36;
+		display: inline;
+	}
+	.artist_info_artist {
+		margin-bottom: 44px;
+	}
+	.artist_info_description {
+		margin-bottom: 44px;
+		margin-left: 52px;		
+	}
+	#artist_info_share {
+		// border: 1px solid red;
+		position: fixed;
+		bottom: 72px;
+		left: 36px;
+		width: 200px;
+		span {
+			margin-right: 24px;
+		}
+		a {
+			margin-right: 24px;
+			width: 24px;
+			display: none;
+			img {
+				width: 24px;
+				margin-bottom: -2px;
+				height: auto;
+				filter: drop-shadow( 0px 0px 8px rgba(255,255,255,0.8) );
+			}
+		}
+	}
+}
+
+#artist_info_next {
+	// border: 1px solid blue;
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	right: 0;
+	padding: 24px 36px 0 24px;
+	height: 100vh;
+	text-align: right;
+	opacity: 0.5;
+	transition: opacity 2s;
+	a {
+	    color: white;
+	    text-decoration: none;
+	}
+	div {
+		// border: 1px solid red;
+		display: inline-block;
+		vertical-align: top;
+		margin-left: 20px;
+	}
+	.next_info {
+	    display: inline-block;
+		text-align: left;
+	}
+	.arrow {
+		width: 32px;
+		img {
+			width: 32px;
+			height: auto;
+			filter: drop-shadow( 0px 0px 8px rgba(255,255,255,0.8) );
+		}
+	}
+	#artist_info_next_hover {
+		border: 1px solid green;
+		position: absolute;
+	    z-index: -1;
+		top: -24px;
+		right: -36px;
+		width: calc( 100% + 36px );
+		height: 100vh;
+	}
+}
+
+.next_info:hover {
+	text-shadow: 0px 0px 16px rgba(255,255,255,1);
+	img {
+		filter: drop-shadow( 0px 0px 16px rgba(255,255,255,1) );
+	}
+}
+
+iframe.next_work {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 2s;
+}
+
+#mobile_black_background {
+	background-color: black;
+	height: 100vh;
+	width: 100%;
+	position: fixed;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	display: none;
+	@media ( $breaksmall ) {
+		display: block;
+	}
+}
