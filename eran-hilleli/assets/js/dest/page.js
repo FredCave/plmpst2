@@ -123,9 +123,11 @@ var Page = {
 	        delta = oe.detail * 40;
 	    }
 	    if ( delta > 10 ) {
-	    	this.imageNext();
+	    	// this.imageNext();
+	     	this.imagePrev();
 	    } else if ( delta < -10 ) {
-	    	this.imagePrev();	
+	    	// this.imagePrev();	
+	    	this.imageNext();
 	    }
 
 	}, 

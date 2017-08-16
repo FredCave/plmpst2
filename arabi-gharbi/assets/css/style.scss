@@ -61,6 +61,7 @@ html, body {
 		background-position: center;
     	filter: grayscale(100%);
     	transition: filter 0.5s;
+    	// opacity: 0.1;
 		video.full_width {
 			width: 100%;
 			min-height: 100%;
@@ -96,6 +97,7 @@ html, body {
 		height: 63.92%;
 	}
 	#webcam {
+		// border: 2px solid yellow;
 		background: black;
 		position: absolute;
 		z-index: 9;
@@ -107,7 +109,7 @@ html, body {
 		font-family: "FGrotesk", helvetica, arial, sans-serif;
 		font-size: 16px;
 		canvas {
-			border: 1px solid orange;
+			// border: 1px solid orange;
 			// background: black;
 			position: absolute;
 			// width: 100%;
@@ -118,7 +120,7 @@ html, body {
 			display: none;
 		}
 		video {
-			border: 1px solid green;
+			// border: 1px solid green;
 			position: absolute;
 			width: auto;
 			height: 100%;
@@ -139,6 +141,7 @@ html, body {
 			background-repeat: no-repeat;	
 			background-size: cover;
 			background-position: center;	
+			padding: 0;
 		}
 		#webcam_button_init {
 			position: absolute;
@@ -271,5 +274,5 @@ html, body {
 	background-position: center center;
 	background-size: cover;
 	pointer-events: none;
-	opacity: 0.8;
+	// opacity: 0.2;
 }

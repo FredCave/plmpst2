@@ -13,9 +13,9 @@ var Webcam = {
 		// CALLED FROM PAGE.JS ONCE POST DATA IS LOADED
 		// this.initialState();
 
-		// TMP
-		$("#webcam_initial_image").hide();
-		$("#webcam_button_init").hide();
+		// // TMP
+		// $("#webcam_initial_image").hide();
+		// $("#webcam_button_init").hide();
 	
 	},
 
@@ -31,6 +31,10 @@ var Webcam = {
 
 		$("#webcam_button_close").on( "click", function(){
 			self.webcamClose();
+		});
+
+		$("#webcam_button_refresh").on( "click", function(){
+			self.loadImages();
 		});
 
 		$("#webcam_button_take").on( "click", function(){
@@ -59,7 +63,7 @@ var Webcam = {
 		Page.injectImage( "#webcam_initial_image", webcamArray );
 
 		// TMP
-		this.webcamLoad();
+		// this.webcamLoad();
 
 	},
 
@@ -98,65 +102,69 @@ var Webcam = {
 
 	},
 
+	loadImages: function () {
+
+		console.log("Webcam.loadImages");
+
+		this.frame_image = new Image();
+		this.frame_image.src = this.getFrameImage();
+
+		this.tracking_image = new Image();
+		this.tracking_image.src = this.getTrackingImage();
+
+  		this.static_image = new Image();
+		this.static_image.src = this.getStaticImage();
+
+	},
+
 	trackingInit: function () {
 
 		console.log("Webcam.trackingInit");
 
-		var video = document.getElementById('webcam_video');
-		var canvas = document.getElementById('canvas');
-		var context = canvas.getContext('2d');
+		var self = this;
+
+		this.video = document.getElementById('webcam_video');
+		this.canvas = document.getElementById('canvas');
+		this.context = canvas.getContext('2d');
 
 		// SET CANVAS SIZE ATTR TO ACTUAL SIZE
-		var canvasW = $("#webcam_video").width(),
-			canvasH = $("#webcam_video").height();
-		console.log( 45, canvasW, canvasH );
-		// $("#canvas").attr({
-		// 	"height" 	: canvasH,
-		// 	"width"		: canvasW
-		// }).css({
-		// 	"height" 	: canvasH,
-		// 	"width"		: canvasW			
-		// });
+		var canvasH = $("#webcam_video").height(),
+			canvasW = canvasH * 1.3333;
+		$("#canvas").attr({
+			"height" 	: canvasH,
+			"width"		: canvasW
+		}).css({
+			"height" 	: canvasH,
+			"width"		: canvasW			
+		});
 
-		var tracker = new tracking.ObjectTracker('face');
-		tracker.setInitialScale(1.4);
-		tracker.setStepSize(1.1);
-		tracker.setEdgesDensity(0.1);
+		this.tracker = new tracking.ObjectTracker('face');
+		this.tracker.setInitialScale(1.4);
+		this.tracker.setStepSize(1.1);
+		this.tracker.setEdgesDensity(0.1);
+		tracking.track('#webcam_video', this.tracker, { camera: true });
 
-		tracking.track('#webcam_video', tracker, { camera: true });
+  		// X POSITION OF FRAME IN ORDER TO CENTER
+  		var frameX = ( canvasW - canvasH * 0.7 ) / 2;
 
-		console.log( 49, tracker );
+  		this.loadImages();
 
-		// var frame_image = new Image();
-		// frame_image.src = this.getFrameImage();
+		this.tracker.on('track', _.throttle( function(event) {
 
-		var tracking_image = new Image();
-		tracking_image.src = this.getTrackingImage();
-		tracking_image.onload = function(){
-			context.drawImage( tracking_image, 100, 100 );
-  		}
+			self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
 
-  		var draggable_image = new Image();
-		tracking_image.src = this.getTrackingImage();
-		tracking_image.onload = function(){
-			context.drawImage( tracking_image, 100, 100 );
-  		}
+			// DRAW FRAME
+			self.context.drawImage( self.frame_image, frameX, canvasH * 0.05, canvasH * 0.7, canvasH * 0.9 );
+			// DRAW STATIC IMAGE
+			// ....
 
-		tracker.on('track', function(event) {
-
-			context.clearRect(0, 0, canvas.width, canvas.height);
-
-			event.data.forEach(function(rect) {
-				context.strokeStyle = '#a64ceb';
-				context.strokeRect(rect.x, rect.y, rect.width, rect.height);
-				context.drawImage( tracking_image, rect.x, rect.y, rect.width, rect.height );
-				// context.font = '11px Helvetica';
-				// context.fillStyle = "#fff";
-				// context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
-				// context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+			event.data.forEach( function(rect) {
+				// context.strokeStyle = '#a64ceb';
+				// context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+				self.context.drawImage( self.tracking_image, rect.x, rect.y, rect.width, rect.height );
 			});
 
-		});
+		}, 100 ));
 
 	},
 
@@ -183,19 +191,18 @@ var Webcam = {
 		// SHUFFLE
 		Page.shuffle( frameArray );
 		// GET FIRST IMAGE
-		var frame = frameArray[0];
-
-		console.log( 151, frameArray, this.imagesFrames );
+		var frameImage = frameArray[0];
 
 		// RETURN SRC
+		return frameImage["frame_image"].sizes.extralarge;
 
 	},
 
-	getDraggableImage: function () {
+	getStaticImage: function () {
 
-		console.log("Webcam.getDraggableImage");
+		console.log("Webcam.getStaticImage");
 
-		var draggableArray = this.imagesDraggable;
+		// var draggableArray = this.imagesDraggable;
 
 		// RETURN SRC
 
@@ -208,6 +215,7 @@ var Webcam = {
 		// DISABLE CAPTURE
 		this.captureDisabled = true;
 
+		// GET CURRENT DATE AND TIME
 		var today = new Date(),
 			day = ( '0' + today.getDate() ).slice(-2),
 			month = ( '0' + ( today.getMonth()+1 ) ).slice(-2),
@@ -223,7 +231,8 @@ var Webcam = {
 			"href" 		: this.captureImage()
 		});
 
-		this.currentFileName = "Arabi Gharbi " + date + " at " + time + ".png";
+		// SAVE CURRENT FILENAME
+		// this.currentFileName = "Arabi Gharbi " + date + " at " + time + ".png";
 
 		// SHOW SUCCESS SCREEN
 		$("#webcam_loaded_buttons").hide();
@@ -235,15 +244,29 @@ var Webcam = {
 
 		console.log("Webcam.captureImage");
 
+		// GET ELEMENTS TO CAPTURE
 		var videoElem = $("#webcam_video").get(0),
-			canvasElem = $("#canvas").get(0),  
-			newCanvas = document.createElement("canvas");
+			canvasElem = $("#canvas").get(0);
 
-        newCanvas.width = videoElem.videoWidth;
-        newCanvas.height = videoElem.videoHeight * 2;
-        var context = newCanvas.getContext('2d');
-        context.drawImage( videoElem, 0 - ( newCanvas.width / 2 ), 0, newCanvas.width * 2, newCanvas.height )
-        context.drawImage( canvasElem, 0 - ( newCanvas.width / 2 ), 0, newCanvas.width * 2, newCanvas.height );
+		// CREATE NEW CANVAS
+		var newCanvas = document.createElement("canvas");
+		// SET FORMAT OF CANVAS BASED ON WHAT IS VISIBLE IN BROWSER : RATIO 1.36
+        newCanvas.width = $("#webcam").width() * 1.67;
+        newCanvas.height = $("#webcam").height() * 1.67;
+        
+        console.log( 260, videoElem, newCanvas.width, newCanvas.height );
+
+        // DRAW ELEMENTS ONTO NEW CANVAS
+        var context = newCanvas.getContext('2d'),
+        	elemX = ( newCanvas.width - ( newCanvas.height * 1.33 ) ) / 2, // X POSITION OF ELEM ON CANVAS = ( CANVASW - ELEMW ) / 2
+        	elemY = 0, // Y POSITION OF ELEM ON CANVAS = 0
+        	elemW = newCanvas.height * 1.33, // WIDTH OF ELEM ON CANVAS = CANVAS HEIGHT * VIDEO RATIO
+        	elemH = newCanvas.height; // HEIGHT OF ELEM ON CANVAS
+
+        console.log( 269, elemX, elemY, elemW, elemH );
+
+        context.drawImage( videoElem, elemX, elemY, elemW, elemH )
+        context.drawImage( canvasElem, elemX, elemY, elemW, elemH );
  
         var img = document.createElement("img");
         img.src = newCanvas.toDataURL();
@@ -258,27 +281,33 @@ var Webcam = {
 
 		console.log("Webcam.saveCaptureToDatabase");
 
-		// console.log( 259, this.currentCapture );
-
 		// SAVE TO SERVER
 		$.ajax({
 			type: "POST",
 			url: "save_image/",
 			data: { 
-		 		imgBase64: this.currentCapture,
-		 		filename: this.currentFileName
+		 		imgBase64: this.currentCapture
 			}
 		}).done( function(o) {
-			console.log('saved'); 
+			console.log("Image saved."); 
 		});
-
-
 
 	}, 
 
 	webcamClose: function () {
 
 		console.log("Webcam.webcamClose");
+
+		$("#webcam_success").hide();
+		$("#webcam_video").hide();
+		$("#canvas").hide();
+		$("#webcam_loaded_buttons").hide();
+		$("#webcam_access_screen").hide();
+
+		$("#webcam_initial_image").show();
+		$("#webcam_button_init").show();
+
+		// tracking.stopUserMedia();
 
 	}
 

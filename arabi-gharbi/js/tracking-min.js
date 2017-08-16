@@ -1,5 +1,3 @@
-console.log( 1, "Tracking init" );
-
 /**
  * tracking - A modern approach for Computer Vision on the web.
  * @author Eduardo Lundgren <edu@rdo.io>

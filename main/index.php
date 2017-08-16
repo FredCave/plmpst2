@@ -1,7 +1,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Jerusalem Palimpsest – Coming Soon</title>
+		<title>Jerusalem Palimpsest</title>
 	</head>
-	<body></body>
+	<body>
+
+	</body>
 </html>

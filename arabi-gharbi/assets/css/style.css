@@ -111,7 +111,7 @@ html, body {
   transition: filter 0.5s;
   transition: filter 0.5s, -webkit-filter 0.5s;
 }
-/* line 64, style.scss */
+/* line 65, style.scss */
 #content_frame .slideshow_wrapper video.full_width {
   width: 100%;
   min-height: 100%;
@@ -121,7 +121,7 @@ html, body {
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
 }
-/* line 73, style.scss */
+/* line 74, style.scss */
 #content_frame #slideshow_1 {
   z-index: 9;
   top: 0;
@@ -129,28 +129,28 @@ html, body {
   width: 32.56%;
   height: 71.52%;
 }
-/* line 80, style.scss */
+/* line 81, style.scss */
 #content_frame #slideshow_2 {
   bottom: 0;
   left: 26.25%;
   width: 38.65%;
   height: 44.98%;
 }
-/* line 86, style.scss */
+/* line 87, style.scss */
 #content_frame #slideshow_3 {
   bottom: 0;
   right: 0;
   width: 35.1%;
   height: 36.12%;
 }
-/* line 92, style.scss */
+/* line 93, style.scss */
 #content_frame #slideshow_4 {
   top: 0;
   right: 0;
   width: 30.15%;
   height: 63.92%;
 }
-/* line 98, style.scss */
+/* line 99, style.scss */
 #content_frame #webcam {
   background: black;
   position: absolute;
@@ -163,9 +163,8 @@ html, body {
   font-family: "FGrotesk", helvetica, arial, sans-serif;
   font-size: 16px;
 }
-/* line 109, style.scss */
+/* line 111, style.scss */
 #content_frame #webcam canvas {
-  border: 1px solid orange;
   position: absolute;
   height: 100%;
   -webkit-transform: translateX(-50%);
@@ -174,9 +173,8 @@ html, body {
   bottom: 0;
   display: none;
 }
-/* line 120, style.scss */
+/* line 122, style.scss */
 #content_frame #webcam video {
-  border: 1px solid green;
   position: absolute;
   width: auto;
   height: 100%;
@@ -185,14 +183,14 @@ html, body {
           transform: translateX(-50%);
   display: none;
 }
-/* line 129, style.scss */
+/* line 131, style.scss */
 #content_frame #webcam div {
   display: none;
   text-align: center;
   padding: 6px 10px;
   line-height: 1.4;
 }
-/* line 135, style.scss */
+/* line 137, style.scss */
 #content_frame #webcam #webcam_initial_image {
   display: block;
   height: 100%;
@@ -200,8 +198,9 @@ html, body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  padding: 0;
 }
-/* line 143, style.scss */
+/* line 146, style.scss */
 #content_frame #webcam #webcam_button_init {
   position: absolute;
   bottom: 64px;
@@ -210,34 +209,34 @@ html, body {
           transform: translateX(-50%);
   display: block;
 }
-/* line 150, style.scss */
+/* line 153, style.scss */
 #content_frame #webcam .webcam_button {
   cursor: pointer;
   background-color: white;
   padding: 4px 10px 8px 10px;
 }
-/* line 154, style.scss */
+/* line 157, style.scss */
 #content_frame #webcam .webcam_button p {
   border-bottom: 1px solid black;
   display: inline;
 }
-/* line 159, style.scss */
+/* line 162, style.scss */
 #content_frame #webcam .webcam_button:hover {
   background-color: #2962FF !important;
 }
-/* line 161, style.scss */
+/* line 164, style.scss */
 #content_frame #webcam .webcam_button:hover p {
   color: white;
   border-bottom: 1px solid white;
 }
-/* line 166, style.scss */
+/* line 169, style.scss */
 #content_frame #webcam #webcam_access_screen {
   background-color: #2962FF;
   height: 100%;
   width: 100%;
   text-align: center;
 }
-/* line 171, style.scss */
+/* line 174, style.scss */
 #content_frame #webcam #webcam_access_screen p {
   position: absolute;
   color: white;
@@ -247,7 +246,7 @@ html, body {
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
 }
-/* line 180, style.scss */
+/* line 183, style.scss */
 #content_frame #webcam #webcam_loaded_buttons {
   position: absolute;
   bottom: 16px;
@@ -257,18 +256,18 @@ html, body {
   padding: 0;
   text-align: left;
 }
-/* line 189, style.scss */
+/* line 192, style.scss */
 #content_frame #webcam #webcam_loaded_buttons a {
   text-decoration: none;
 }
-/* line 192, style.scss */
+/* line 195, style.scss */
 #content_frame #webcam #webcam_loaded_buttons .webcam_button {
   width: auto;
   display: inline-block;
   margin-top: 16px;
   margin-right: 50%;
 }
-/* line 198, style.scss */
+/* line 201, style.scss */
 #content_frame #webcam #webcam_loaded_buttons #webcam_button_close {
   width: 34px;
   height: 34px;
@@ -277,7 +276,7 @@ html, body {
   margin-bottom: -4px;
   margin-right: 100%;
 }
-/* line 205, style.scss */
+/* line 208, style.scss */
 #content_frame #webcam #webcam_loaded_buttons #webcam_button_close img {
   position: absolute;
   top: 4px;
@@ -286,23 +285,23 @@ html, body {
   height: 26px;
   min-height: 0;
 }
-/* line 213, style.scss */
+/* line 216, style.scss */
 #content_frame #webcam #webcam_loaded_buttons #webcam_button_close .white {
   display: none;
 }
-/* line 216, style.scss */
+/* line 219, style.scss */
 #content_frame #webcam #webcam_loaded_buttons #webcam_button_close .blue {
   display: block;
 }
-/* line 221, style.scss */
+/* line 224, style.scss */
 #content_frame #webcam #webcam_loaded_buttons #webcam_button_close:hover .blue {
   display: none;
 }
-/* line 224, style.scss */
+/* line 227, style.scss */
 #content_frame #webcam #webcam_loaded_buttons #webcam_button_close:hover .white {
   display: block;
 }
-/* line 229, style.scss */
+/* line 232, style.scss */
 #content_frame #webcam #webcam_success {
   background-color: #2962FF;
   position: absolute;
@@ -312,12 +311,12 @@ html, body {
   left: 5%;
   color: white;
 }
-/* line 237, style.scss */
+/* line 240, style.scss */
 #content_frame #webcam #webcam_success p {
   width: 80%;
   margin-left: 10%;
 }
-/* line 241, style.scss */
+/* line 244, style.scss */
 #content_frame #webcam #webcam_success .webcam_button {
   border: 1px solid white;
   background-color: #2962FF;
@@ -325,23 +324,23 @@ html, body {
   margin: 16px 7px 0 7px;
   padding: 8px;
 }
-/* line 247, style.scss */
+/* line 250, style.scss */
 #content_frame #webcam #webcam_success .webcam_button p {
   margin: 0 10px;
   border-bottom: 1px solid white;
 }
-/* line 252, style.scss */
+/* line 255, style.scss */
 #content_frame #webcam #webcam_success .webcam_button:hover {
   border: 1px solid white;
   background-color: white !important;
 }
-/* line 255, style.scss */
+/* line 258, style.scss */
 #content_frame #webcam #webcam_success .webcam_button:hover p {
   border-bottom: 1px solid #2962FF;
   color: #2962FF;
 }
 
-/* line 264, style.scss */
+/* line 267, style.scss */
 #frame {
   position: fixed;
   top: 0;
@@ -352,5 +351,4 @@ html, body {
   background-position: center center;
   background-size: cover;
   pointer-events: none;
-  opacity: 0.8;
 }

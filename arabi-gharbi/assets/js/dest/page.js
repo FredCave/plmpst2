@@ -105,8 +105,7 @@ var Page = {
 		    url: ROOT + "/wp-json/wp/v2/posts/14",
 		    // url: ROOT + "/wp-json/wp/v2/posts/22", // 22 ON SERVER
 		    success: function(data) {
-				console.log( 76, data.acf );
-				
+
 				self.slideshowData = data.acf;
 				self.loadWebcamArchive();
 
@@ -137,7 +136,6 @@ var Page = {
 			dataType: "json"
 		}).done( function(data) {
 		
-			console.log( 138, data );
 			self.webcamImages = data;
 			self.slideshowsInit();
 
@@ -162,8 +160,6 @@ var Page = {
 		// CREATE ARRAY OF IMAGES + MOVIES
 		this.slideshowContent = this.slideshowData.images.concat( this.slideshowData.movies ).concat( this.webcamImages );
 
-		console.log( 162, this.slideshowContent );
-
 		// SHUFFLE ARRAY
 		this.shuffle( this.slideshowContent );
 
@@ -175,14 +171,11 @@ var Page = {
 		function sendToFrames ( init ) {
 			console.log("Page.slideshowsInit.sendToFrames");
 
-			console.log( 116, self.slideshowContent );
-
 			// GET 2 HORIZONTAL + 2 VERTICAL (MOVIES ARE HORIZONTAL)
 			// PUSH TO currentVert + currentHoriz
 			for ( var i = self.slideshowContent.length - 1; i >= 0; i-- ) {
 				var elem = self.slideshowContent[i];
 				// IF WEBCAM IMAGE
-				console.log( 185, elem );
 				if ( typeof elem === 'string' && elem.indexOf("images/img_") > -1 ) {
 					if ( currentVert.length < 2 ) {
 						currentVert.push( self.slideshowContent.splice(i,1) );
@@ -216,7 +209,6 @@ var Page = {
 				delay_4 = 0; 
 			}
 
-			console.log( 178, currentVert[0] );
 			self.injectImage( "#slideshow_1", currentVert[0] );
 			_.delay( function(){
 				self.injectImage( "#slideshow_2", currentHoriz[0] );				
@@ -251,8 +243,6 @@ var Page = {
 		var targetW = $(target).width(),
 			targetH = $(target).height(),
 			self = this;
-
-		console.log( 255, image );
 
 		// IMG CALC ONLY IF IMAGE
 		// FIRST OPTION IS FOR WEBCAM IMAGES FROM SERVER

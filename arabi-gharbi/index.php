@@ -12,7 +12,7 @@
 
 			<!-- YOUTUBE PLAYLIST -->
 			<div id="youtube_playlist">
-				<iframe src="https://www.youtube.com/embed/videoseries?list=PLGf0_dz21-MM7XIwmazK0dSXL7sbK1Ns1&autoplay=1"></iframe>
+				<iframe data-src="https://www.youtube.com/embed/videoseries?list=PLGf0_dz21-MM7XIwmazK0dSXL7sbK1Ns1&autoplay=1"></iframe>
 			</div>
 
 			<div id="slideshow_1" class="slideshow_wrapper group_one"></div>
