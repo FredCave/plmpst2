@@ -102,8 +102,8 @@ var Page = {
 
 		// GET POST INFO
 		$.ajax({
-		    url: ROOT + "/wp-json/wp/v2/posts/14",
-		    // url: ROOT + "/wp-json/wp/v2/posts/22", // 22 ON SERVER
+		    // url: ROOT + "/wp-json/wp/v2/posts/14",
+		    url: ROOT + "/wp-json/wp/v2/posts/22", // 22 ON SERVER
 		    success: function(data) {
 
 				self.slideshowData = data.acf;
@@ -264,14 +264,12 @@ var Page = {
 				}
 				
 				if ( targetW <= 400 ) {
-					imgSrc = imgSizes.thumbnail;
+					imgSrc = imgSizes.mediuam;
 				} else if ( targetW > 400 && targetW <= 600 ) {
-					imgSrc = imgSizes.medium;
-				} else if ( targetW > 600 && targetW <= 768 ) {
 					imgSrc = imgSizes.medium_large;
-				} else if ( targetW > 768 && targetW <= 900 ) {
+				} else if ( targetW > 600 && targetW <= 768 ) {
 					imgSrc = imgSizes.large;
-				} else if ( targetW > 900 && targetW <= 1200 ) {
+				} else if ( targetW > 768 && targetW <= 900 ) {
 					imgSrc = imgSizes.extralarge;
 				} else {
 					imgSrc = imgSizes.ultralarge;

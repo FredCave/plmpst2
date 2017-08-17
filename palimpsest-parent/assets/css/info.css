@@ -546,9 +546,3 @@ iframe.next_work {
   left: 0;
   display: none;
 }
-@media (max-width: 768px) {
-  /* line 453, info.scss */
-  #mobile_black_background {
-    display: block;
-  }
-}

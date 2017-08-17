@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/style.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url') ?>/info.min.css">
 	
-	<?php /* <link rel="icon" type="image/png" href="<?php bloginfo('template_url') ?>/assets/img/favicon.png" sizes=""> */ ?>
+	<link rel="icon" type="image/png" href="<?php bloginfo('url') ?>/favicon_96.png" sizes="96x96">
 
 	<script>
 		// FIX IE CONSOLE ERRORS
