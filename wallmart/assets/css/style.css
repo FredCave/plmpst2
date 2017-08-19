@@ -57,8 +57,7 @@ table {
 /* line 19, style.scss */
 html, body {
   width: 100%;
-  height: 100%;
-  background-color: black;
+  height: auto;
   overflow-x: hidden;
 }
 
@@ -81,14 +80,14 @@ html, body {
   width: 100%;
   height: auto;
 }
-/* line 42, style.scss */
+/* line 43, style.scss */
 #postcards li {
   position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
 }
-/* line 48, style.scss */
+/* line 49, style.scss */
 #postcards li .postcard_image {
   width: 120%;
   height: 120%;
@@ -100,16 +99,85 @@ html, body {
   background-position: center;
 }
 
-/* line 61, style.scss */
-#objects {
-  border: 1px solid green;
+/* line 62, style.scss */
+#objects_wrapper {
   position: absolute;
-  top: 0;
+  top: 100vh;
   left: 60px;
+  min-height: 100vh;
   width: calc( 100% - 120px );
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
-/* line 67, style.scss */
-#objects .row {
-  border: 1px solid pink;
-  height: 100vh;
+/* line 72, style.scss */
+#objects_wrapper .list-item {
+  border: 1px solid green;
+  display: inline-block;
+  width: 49.5%;
+  height: 85vh;
+  position: relative;
+  margin-bottom: 200px;
+}
+/* line 82, style.scss */
+#objects_wrapper .list-item canvas {
+  border: 1px solid red;
+  width: 100%;
+  height: 100%;
+}
+/* line 87, style.scss */
+#objects_wrapper .list-item .scene {
+  width: 100%;
+  height: 100%;
+}
+/* line 91, style.scss */
+#objects_wrapper .list-item .caption {
+  position: absolute;
+  top: calc( 100% - 130px );
+  width: 100%;
+  height: 130px;
+  display: none;
+  pointer-events: none;
+}
+/* line 99, style.scss */
+#objects_wrapper .list-item .caption img {
+  height: 130px;
+  width: auto;
+}
+
+/* line 108, style.scss */
+#canvas {
+  border: 2px solid blue;
+  position: absolute;
+  top: 100vh;
+  left: 0px;
+  width: calc( 100% - 0px );
+  height: calc( 525vh + 1400px );
+  opacity: 0.9;
+}
+
+/* line 122, style.scss */
+#title_wrapper {
+  top: 160px;
+  width: 100%;
+  height: calc( 100vh - 380px );
+  position: absolute;
+  z-index: 9;
+}
+/* line 129, style.scss */
+#title_wrapper .title {
+  height: 100%;
+  width: 80%;
+  max-width: 1024px;
+  margin: 0 auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  -webkit-filter: drop-shadow(0px 16px 18px rgba(0, 0, 0, 0.6));
+          filter: drop-shadow(0px 16px 18px rgba(0, 0, 0, 0.6));
+  opacity: 0.9;
 }

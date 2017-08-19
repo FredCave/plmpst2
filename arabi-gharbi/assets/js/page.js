@@ -102,8 +102,8 @@ var Page = {
 
 		// GET POST INFO
 		$.ajax({
-		    // url: ROOT + "/wp-json/wp/v2/posts/14",
-		    url: ROOT + "/wp-json/wp/v2/posts/22", // 22 ON SERVER
+		    url: ROOT + "/wp-json/wp/v2/posts/14",
+		    // url: ROOT + "/wp-json/wp/v2/posts/22", // 22 ON SERVER
 		    success: function(data) {
 
 				self.slideshowData = data.acf;

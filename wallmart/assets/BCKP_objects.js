@@ -76,24 +76,12 @@ var Objects = {
   				var axis = new THREE.AxisHelper(20);
   				scene.add(axis);
 
-  				scene.name = filename;
-
-  				// TMP
-  				var lineGeometry = new THREE.Geometry();
-			    lineGeometry.vertices.push(new THREE.Vector3(-10, -10, 0),
-			    new THREE.Vector3(10, -10, 0),
-			    new THREE.Vector3(10, 10, 0),
-			    new THREE.Vector3(-10, 10, 0),
-			    new THREE.Vector3(-10, -10, 0));
-			    var line = new THREE.Line(lineGeometry,
-			    	new THREE.LineBasicMaterial({
-			        	color: 0xffff00
-			    	}));
-			    scene.add(line);
-
 				scenes.push( scene );
 
+
 			});
+
+
 
 			renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true, alpha: true } );
 			renderer.setClearColor( 0xffffff, 0 );
@@ -107,19 +95,10 @@ var Objects = {
 			var width = canvas.clientWidth;
 			var height = canvas.clientHeight;
 
-			// console.log( 97, width, height,  );
-				width = $("#objects_wrapper").width() + 60;
-				height = $("#objects_wrapper").outerHeight() - 200;
-
-			console.log( 101, canvas.clientHeight, height );
-
-			$("#canvas").css({
-				// "width" : width,
-				"height" : height
-			});
-
 			if ( canvas.width !== width || canvas.height != height ) {
+
 				renderer.setSize( width, height, false );
+
 			}
 
 		}
@@ -143,9 +122,6 @@ var Objects = {
 
 			updateSize();
 
-			var scrollTop = $(window).scrollTop();
-			var winH = $(window).height();
-
 			renderer.setClearColor( 0xffffff, 0 );
 			renderer.setScissorTest( false );
 			renderer.clear();
@@ -166,29 +142,22 @@ var Objects = {
 				var rect = element.getBoundingClientRect();
 
 				// check if it's offscreen. If so skip it
-				if ( rect.bottom + scrollTop < 0 || rect.top + scrollTop > renderer.domElement.clientHeight ||
+				if ( rect.bottom < 0 || rect.top  > renderer.domElement.clientHeight ||
 					 rect.right  < 0 || rect.left > renderer.domElement.clientWidth ) {
-					console.log( scene.name, " offscreen" );
 					return;  // it's off screen
 				}
+
+				// console.log( 139, Math.floor(rect.top), Math.floor(rect.bottom), rect.left, rect.right );
 
 				// CALC THE VIEWPORT
 				var width  = rect.right - rect.left;
 				var height = rect.bottom - rect.top;
-				var left   = rect.left - 60;
-				var top    = rect.top ;
+				var left   = rect.left;
+				var top    = rect.top;
 
-				if ( scene.name === "gate" ) {
-					console.log( 162, top, height );
-
-				}
 				// SET VIEWPORT FOR EACH SCENE
-				
-				// ADD SCROLL DISTANCE
-				// console.log( 161, $(window).scrollTop() );
-
-				renderer.setViewport( left, top + scrollTop, width, height );
-				renderer.setScissor( left, top + scrollTop, width, height );
+				renderer.setViewport( left, top, width, height );
+				renderer.setScissor( left, top, width, height );
 
 				var camera = scene.userData.camera;
 

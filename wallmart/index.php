@@ -1,10 +1,5 @@
 <?php get_header(); ?>
 
-	<?php 	
-	// CHECK IF PAGE WILL BE SHOWN IN BACKGROUND OF ANOTHER PAGE
-	$bg_var = get_query_var('background'); 
-	?>
-
 	<div id="wrapper" data-id="6" data-bg="<?php echo $bg_var; ?>">
 
 		<?php 
@@ -21,35 +16,17 @@
 				<?php endwhile; ?>
 			</ul>
 		<?php 
-		endif;
+		endif; 
+		?>
+		
+		<div id="title_wrapper" data-600="filter: drop-shadow( 0px -80px 6px rgba( 0, 0, 0, 0.6 ) )" data-10="filter: drop-shadow( 0px 80px 6px rgba( 0, 0, 0, 0.6 ) )">
+			<div class="title" style="background-image:url('<?php bloginfo('stylesheet_directory'); ?>/assets/img/logo.svg')"></div>
+	 	</div>
 
-		// 3D OBJECTS ?>
+		<canvas id="canvas"></canvas>
 
-		<ul id="objects">
-			<li class="row">
-				<div id="object_1" class="object"></div>
-				<div id="object_2" class="object"></div>
-			</li>
-			<li class="row">
-				<div id="object_1" class="object"></div>
-				<div id="object_2" class="object"></div>
-			</li>
-			<li class="row">
-				<div id="object_1" class="object"></div>
-				<div id="object_2" class="object"></div>
-			</li>
-			<li class="row">
-				<div id="object_1" class="object"></div>
-				<div id="object_2" class="object"></div>
-			</li>
-			<li class="row">
-				<div id="object_1" class="object"></div>
-				<div id="object_2" class="object"></div>
-			</li>			
-		</ul>
-
-		<div id="object">
-
+		<!-- OBJECTS APPENDED HERE -->
+		<div id="objects_wrapper">
 		</div>
 
 	</div>
@@ -64,9 +41,6 @@
 	}
 	?>
 
-<!-- 	-->
-<!-- 	<script src="js/loaders/STLLoader.js"></script> -->
-<!-- 	<script src="js/Detector.js"></script> -->
 	<script src="<?php bloginfo('stylesheet_directory'); ?>/js/three.min.js"></script> 
 	<script src="<?php bloginfo('stylesheet_directory'); ?>/js/scripts.min.js"></script>
 

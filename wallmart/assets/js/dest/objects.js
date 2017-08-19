@@ -1,139 +1,207 @@
 var Objects = {
 
-	container 		: "",
-	camera 			: "",
-	cameraTarget 	: "",
-	scene 			: "",
-	renderer 		: "",	
-	controls 		: "", 
-
 	init: function () {
 
 		console.log("Objects.init");
 
-		// if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-		var self = this;
+		var canvas;
 
-		// this.container = document.createElement( 'div' );
-		// document.body.appendChild( this.container );
+		var scenes = [], renderer;
 
-        if ( Detector.webgl ) {
-            this.renderer = new THREE.WebGLRenderer({ 
-            	antialias: true,
-            	alpha: true 
-            });
-        } else {
-            this.renderer = new THREE.CanvasRenderer(); 
-        }   
- 
-		this.renderer.setPixelRatio( window.devicePixelRatio * 1.2 );
-		this.renderer.setClearColor(0xffffff, 0);
+		init();
+		animate();
 
-        this.container = document.getElementById( 'object' );
-        this.container.appendChild( this.renderer.domElement );
+		function init () {
 
-		this.camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
-		this.camera.position.set( 10, 0, 3 );
-		this.cameraTarget = new THREE.Vector3( 0, -0.25, 0 );
+			canvas = document.getElementById( "canvas" );
 
-		// CONTROLS
-		this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
-		this.controls.target.set( 0, 0, 0 );
-		this.controls.addEventListener( 'change', self.render.bind(this) );
+			var content = document.getElementById("objects_wrapper"), 
+				geometries = Page.geometries;
 
-		this.controls.enableDamping = true;
-		this.controls.dampingFactor = 0.1;
+			// LOOP THROUGH FILENAMES FOR ORDER OF OBJECTS
+			_.each( Page.filenames, function(filename) {
 
-		this.scene = new THREE.Scene();
+				var scene = new THREE.Scene();
 
-		// LOAD FILE
+				// MAKE LIST ITEMS
+				element = document.createElement( "div" );
+				element.className = "list-item";
+				element.innerHTML = "<div class='scene'></div>";
 
-		var loader = new THREE.STLLoader();
-		loader.load( TEMPLATE + '/assets/objects/wall.stl', function ( geometry ) {
+				// Look up the element that represents the area
+				// we want to render the scene
+				scene.userData.element = element.querySelector( ".scene" );
+				content.appendChild( element );
 
-			var material = new THREE.MeshPhongMaterial( { color: 0xcccccc, specular: 0x888888, shininess: 0 } );
-			var mesh = new THREE.Mesh( geometry, material );
+				var camera = new THREE.PerspectiveCamera( 50, 1, 1, 10 );
+				camera.position.z = 5; // WAS 2
+				scene.userData.camera = camera;
 
-			// mesh.position.set( 1, - 0.25, 0.6 );
-			mesh.position.set( 0, -1, -1 );
-			// mesh.rotation.set( 0, - Math.PI / 2, 0 );
-			mesh.rotation.set( - Math.PI / 3.3, Math.PI / 9, Math.PI / 4 );
-			mesh.scale.set( 0.05, 0.05, 0.05 );
+				var controls = new THREE.TrackballControls( scene.userData.camera, scene.userData.element );
+				controls.minDistance = 2;
+				controls.maxDistance = 5;
+				controls.enablePan = false;
+				controls.enableZoom = false;
+				controls.rotateSpeed = 10;
 
-			self.scene.add( mesh );
+				// controls.staticMoving = false;
+				// controls.dynamicDampingFactor = 0.01;
 
-		} );
+				scene.userData.controls = controls;
 
-		// Lights
-		this.scene.add( new THREE.HemisphereLight( 0xeeeeee, 0xaaaaaa ) );
-		this.addShadowedLight( 1, 1, 1, 0xffffff, 1.25 );
-		
-		// renderer
-		// this.renderer = new THREE.WebGLRenderer( { antialias: true } );
-		// this.renderer.setSize( window.innerWidth, window.innerHeight );
-		// this.renderer.shadowMap.enabled = true;
-		// this.renderer.shadowMap.renderReverseSided = false;
-		// this.container.appendChild( this.renderer.domElement );
+				// ADD OBJECT FROM GEOMETRIES ARRAY
+				var material = new THREE.MeshPhongMaterial( { color: 0xeeeeee, specular: 0xaaaaaa, shininess: 0 } );
+				
+				// GET GEOMETRY BY NAME
+				var thisGeometry = _.find( geometries, function(item) {
+					return item.name == filename; 
+				});
 
-		window.addEventListener( 'resize', self.onWindowResize(), false );
+				var mesh = new THREE.Mesh( thisGeometry, material );
+				
+				mesh.position.set( 0, 0, 0 );
+				mesh.rotation.set( - Math.PI / 2, - Math.PI / 12, 0 );
+				mesh.scale.set( 0.05, 0.05, 0.05 );
 
-	},
+				scene.add( mesh );
 
-	addShadowedLight : function ( x, y, z, color, intensity ) {
+				// LIGHTS
+				scene.add( new THREE.HemisphereLight( 0xaaaaaa, 0x999999 ) );
+				var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				light.position.set( 1, 1, 1 );
+				scene.add( light );
 
-		var directionalLight = new THREE.DirectionalLight( color, intensity );
-		directionalLight.position.set( x, y, z );
-		this.scene.add( directionalLight );
+  				var axis = new THREE.AxisHelper(20);
+  				scene.add(axis);
 
-		directionalLight.castShadow = true;
+  				scene.name = filename;
 
-		var d = 1;
-		directionalLight.shadow.camera.left = -d;
-		directionalLight.shadow.camera.right = d;
-		directionalLight.shadow.camera.top = d;
-		directionalLight.shadow.camera.bottom = -d;
+  				// TMP
+  				var lineGeometry = new THREE.Geometry();
+			    lineGeometry.vertices.push(new THREE.Vector3(-10, -10, 0),
+			    new THREE.Vector3(10, -10, 0),
+			    new THREE.Vector3(10, 10, 0),
+			    new THREE.Vector3(-10, 10, 0),
+			    new THREE.Vector3(-10, -10, 0));
+			    var line = new THREE.Line(lineGeometry,
+			    	new THREE.LineBasicMaterial({
+			        	color: 0xffff00
+			    	}));
+			    scene.add(line);
 
-		directionalLight.shadow.camera.near = 1;
-		directionalLight.shadow.camera.far = 4;
+				scenes.push( scene );
 
-		directionalLight.shadow.mapSize.width = 1024;
-		directionalLight.shadow.mapSize.height = 1024;
+			});
 
-		directionalLight.shadow.bias = -0.005;
+			renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true, alpha: true } );
+			renderer.setClearColor( 0xffffff, 0 );
+			// renderer.setClearColor( 0x000000, 0 );
+			renderer.setPixelRatio( window.devicePixelRatio );
 
-	}, 
+		}
 
-	onWindowResize : function () {
+		function updateSize() {
 
-		this.camera.aspect = window.innerWidth / window.innerHeight;
-		this.camera.updateProjectionMatrix();
+			var width = canvas.clientWidth;
+			var height = canvas.clientHeight;
 
-		this.renderer.setSize( window.innerWidth, window.innerHeight );
+			// console.log( 97, width, height,  );
+				width = $("#objects_wrapper").width() + 60;
+				height = $("#objects_wrapper").outerHeight() - 200;
 
-	}, 
+			console.log( 101, canvas.clientHeight, height );
 
-	animate: function () {
+			$("#canvas").css({
+				// "width" : width,
+				"height" : height
+			});
 
-		var self = this;
+			if ( canvas.width !== width || canvas.height != height ) {
+				renderer.setSize( width, height, false );
+			}
 
-        // REDUCE FRAME RATE TO 12 FPS
-        setTimeout( function() {
+		}
 
-            requestAnimationFrame( function(){
-                self.animate();
-            } );
+		function animate() {
 
-        }, 1000 / 24 );
+	        // REDUCE FRAME RATE TO 24 FPS
+	        setTimeout( function() {
+	            requestAnimationFrame( function(){
+	                animate();
+	            });
+	        }, 1000 / 12 );
 
-		this.render();
-		this.controls.update();
+			// requestAnimationFrame( animate );
 
-	}, 
+			render();
 
-	render: function () {
+		}
 
-		this.renderer.render( this.scene, this.camera );
+		function render() {
+
+			updateSize();
+
+			var scrollTop = $(window).scrollTop();
+			var winH = $(window).height();
+
+			renderer.setClearColor( 0xffffff, 0 );
+			renderer.setScissorTest( false );
+			renderer.clear();
+
+			// // renderer.setClearColor( 0xe0e0e0 );
+			renderer.setScissorTest( true );
+
+			scenes.forEach( function( scene ) {
+
+				// ROTATE ELEMENTS
+				scene.children[0].rotation.z = Date.now() * 0.00005;
+
+				// GET THE ELEMENT THAT IS A PLACE HOLDER FOR WHERE WE WANT TO
+				// DRAW THE SCENE
+				var element = scene.userData.element;
+
+				// GET ITS POSITION OF EACH SCENE RELATIVE TO THE PAGE'S VIEWPORT
+				var rect = element.getBoundingClientRect();
+
+				// check if it's offscreen. If so skip it
+				if ( rect.bottom + scrollTop < 0 || rect.top + scrollTop > renderer.domElement.clientHeight ||
+					 rect.right  < 0 || rect.left > renderer.domElement.clientWidth ) {
+					console.log( scene.name, " offscreen" );
+					return;  // it's off screen
+				}
+
+				// CALC THE VIEWPORT
+				var width  = rect.right - rect.left;
+				var height = rect.bottom - rect.top;
+				var left   = rect.left - 60;
+				var top    = rect.top ;
+
+				if ( scene.name === "gate" ) {
+					console.log( 162, top, height );
+
+				}
+				// SET VIEWPORT FOR EACH SCENE
+				
+				// ADD SCROLL DISTANCE
+				// console.log( 161, $(window).scrollTop() );
+
+				renderer.setViewport( left, top + scrollTop, width, height );
+				renderer.setScissor( left, top + scrollTop, width, height );
+
+				var camera = scene.userData.camera;
+
+				//camera.aspect = width / height; // not changing in this example
+				//camera.updateProjectionMatrix();
+
+				scene.userData.controls.update();
+
+				renderer.render( scene, camera );
+
+			} );
+
+		}
 
 	}
 
