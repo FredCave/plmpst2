@@ -29,10 +29,10 @@
 
 				if ( get_field("audio_file") ) {
 					$image = get_field("audio_file"); ?>		
-					<audio id="audio_1">
+					<audio id="audio_1" autoplay>
 						<source src="<?php echo $image["url"]; ?>" />
 					</audio>
-					<audio id="audio_2">
+					<audio id="audio_2" autoplay>
 						<source src="<?php echo $image["url"]; ?>" />
 					</audio>
 				<?php 

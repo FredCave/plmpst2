@@ -14,9 +14,12 @@ var Page = {
 
 		this.imagesSize();
 
-		this.scrollInit();
-
-		this.s = skrollr.init({forceHeight: false});
+		if ( !Info.detectMobile() ) {
+			// this.mobileInit();
+		} else {
+			this.scrollInit();
+			this.s = skrollr.init({forceHeight: false});			
+		}
 
 		this.bindEvents();
 
@@ -34,6 +37,7 @@ var Page = {
 		$(window).on("resize", _.throttle( function(){
 
 			self.imagesSize();
+			Objects.canvasSize();
 
 		}, 1000 ));
 
@@ -66,19 +70,15 @@ var Page = {
 				imgW = $(window).height() * imgRatio;
 			}
 
-			if ( imgW <= 400 ) {
-				imgSrc = $(this).attr("data-tmb");
-			} else if ( imgW > 400 && imgW <= 600 ) {
-				imgSrc = $(this).attr("data-med");
-			} else if ( imgW > 600 && imgW <= 768 ) {
+			if ( imgW <= 600 ) {
 				imgSrc = $(this).attr("data-mlg");
-			} else if ( imgW > 768 && imgW <= 900 ) {
+			} else if ( imgW > 600 && imgW <= 768 ) {
 				imgSrc = $(this).attr("data-lrg");
-			} else if ( imgW > 900 && imgW <= 1400 ) {
+			} else if ( imgW > 768 && imgW <= 900 ) {
 				imgSrc = $(this).attr("data-xlg");
 			} else {
 				imgSrc = $(this).attr("data-ulg");
-			}
+			} 
 
 			var currentSrc = $(this).attr("style").split('url("')[1];
 			if ( currentSrc !== undefined ) {
@@ -125,7 +125,6 @@ var Page = {
 			loader.load( TEMPLATE + '/assets/objects/' + filename + "_centered.stl", function ( geometry ) {			
 				// GIVE FILENAME TO GEOMETRY
 				geometry.name = filename;
-				console.log( 121, filename );
 				self.geometries.push( geometry );
 				// IF PALESTINIAN OBJECT (SHOULD BE LAST FILE...?)
 				if ( filename === "palestinian_village" ) {
@@ -147,11 +146,9 @@ var Page = {
 		var self = this;
 
 		$("#objects_wrapper .list-item").each( function(i){
-
 			var captionHtml = "<div class='caption'>";
 				captionHtml += "<img src='" + TEMPLATE + "/assets/img/caption_" + self.filenames[i] + ".svg' />";
 				captionHtml += "</div>";
-
 			$(this).append( captionHtml );
 			$(this).find(".caption").fadeIn(1000);
 

@@ -13,19 +13,6 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 /****************************************
 
-	FONTS
-
-****************************************/
-
-@font-face {
-  font-family: "FGrotesk";
-  font-weight: normal;
-  font-style: normal;
-  src: url("assets/fonts/FGrotesk-Book.woff2") format("woff2"), url("assets/fonts/FGrotesk-Book.woff") format("woff");
-}
-
-/****************************************
-
 	GENERAL
 
 ****************************************/
@@ -59,10 +46,7 @@ html, body {
 	background-position: center;
 	background-repeat: no-repeat;
 	opacity: 0;
-	transition: opacity 2s;	
-		-ms-transition: opacity 2s;
-	-webkit-transition: opacity 2s;
-			transition: opacity 2s;
+	transition: opacity 1s;	
 /*	cursor: url("img/cursor_128.png");*/
 }
 
@@ -80,7 +64,7 @@ html, body {
 
 #button_wrapper {
 /*	border: 1px solid red;*/
-	font-family: "FGrotesk", Helvetica, Arial;
+	font-family: "Palimpsest", Helvetica, Arial;
 	font-size: 14pt;
 	color: white;
 	text-align: center;

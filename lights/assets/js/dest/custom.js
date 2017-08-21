@@ -37,13 +37,19 @@ var Page = {
 		var timeout,
 			self = this;
 
-		$("#button").on("touchstart", function(){
+		$("#button").on( "click", function(){
 
-			$("#mobile_wrapper").hide();
+			// self.audioInit();
+			alert(433);
+
+			var player = $("#audio_1")[0];
+			player.loop = true;
+			player.play();
+
 			setTimeout( function(){
-				$("#wrapper").fadeIn(1000);
-				self.audioInit();					
-			}, 100 );
+				$("#mobile_wrapper").hide();
+				$("#wrapper").fadeIn(1000);				
+			}, 50 );
 		
 		});
 

@@ -97,18 +97,17 @@ html, body {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0;
-  transition: opacity 2s;
-  -webkit-transition: opacity 2s;
-  transition: opacity 2s;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
   /*	cursor: url("img/cursor_128.png");*/
 }
 
-/* line 69, style.scss */
+/* line 66, style.scss */
 #wrapper #dark_image {
   opacity: 1;
 }
 
-/* line 73, style.scss */
+/* line 70, style.scss */
 #mobile_wrapper {
   /*	border: 1px solid purple;*/
   height: calc( 100vh - 60px );
@@ -117,7 +116,7 @@ html, body {
   display: none;
 }
 
-/* line 81, style.scss */
+/* line 78, style.scss */
 #button_wrapper {
   /*	border: 1px solid red;*/
   font-family: "FGrotesk", Helvetica, Arial;
@@ -137,7 +136,7 @@ html, body {
   transform: translateZ(0) translateY(-50%);
 }
 
-/* line 102, style.scss */
+/* line 99, style.scss */
 #button {
   /*	border: 1px solid green;*/
   background-color: white;

@@ -41,7 +41,7 @@
 				<div id="video_sources">
 					<!-- INITIAL VIDEO -->
 					<div class="video">
-						<iframe id="video-1" src="<?php the_field("initial_video"); ?>" width="640" height="360"></iframe>
+						<iframe id="video-1" data-src="<?php the_field("initial_video"); ?>" width="640" height="360"></iframe>
 					</div>
 				<?php
 				foreach ( $videos as $video ) {
@@ -51,7 +51,7 @@
 						?>
 						<div class="video <?php if ( $video["audio"] ) { echo "audio"; } ?>">
 							<iframe id="video-<?php echo $i; ?>" 
-								src="<?php echo $video['vimeo_url']; ?>" width="640" height="360">	
+								data-src="<?php echo $video['vimeo_url']; ?>" width="640" height="360">	
 							</iframe>
 						</div>
 					<?php 
@@ -63,7 +63,7 @@
 				foreach ( $send_to_back as $video ) { ?>
 					<div class="video audio">
 						<iframe id="video-<?php echo $i; ?>" 
-							src="<?php echo $video['vimeo_url']; ?>" width="640" height="360">	
+							data-src="<?php echo $video['vimeo_url']; ?>" width="640" height="360">	
 						</iframe>
 					</div>
 					<?php 
@@ -80,22 +80,25 @@
 		?>
 
 		<!-- CONTROLS -->
-		<div id="hover_area_left" class="hover_area"></div>
-		<div id="hover_area_right" class="hover_area"></div>
-
 		<div id="arrows">
-			<div id="arrow_left" class="arrow"><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/nav_arrow.png" /></div>	
-			<div id="arrow_right" class="arrow"><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/nav_arrow.png" /></div>
+			<div id="arrow_left" class="arrow"><a href=""><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/nav_arrow.png" /></a></div>	
+			<div id="arrow_right" class="arrow"><a href=""><img src="<?php bloginfo('stylesheet_directory'); ?>/assets/img/nav_arrow.png" /></a></div>
 		</div>
 
-		<div id="counter"></div>
+		<div id="subtitles"></div>
+
+		<div id="work_nav">
+			<div id="fullscreen" class="button_right">
+
+			</div>
+		</div>
 
 	</div>
 
 	<?php 
 	// IF NOT BACKGROUND
 	if ( !$bg_var ) {
-		$title = "A Fire Wil Burn";
+		$title = "A Fire Will Burn";
 		$artist = "Tohar Lev Jacobson";
 		include_once( get_template_directory() . '/includes/artist_info.php' );
 		include_once( get_template_directory() . '/includes/main_info.php' );

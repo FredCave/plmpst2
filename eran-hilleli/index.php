@@ -33,6 +33,11 @@
 			echo "</ul>";
 		endif; ?>
 
+		<!-- SCROLL TO START -->
+		<div id="scroll_to_start">
+			Scroll to Start
+		</div>
+
 	</div>
 
 	<?php 

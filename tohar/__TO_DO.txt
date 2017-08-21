@@ -1,7 +1,1 @@
-So one of the important things we should fix before sending to him is the sounds. Is it already programmed? Can I play with it in backend? Can you send me the access?
-
-And when a video ends it should automatically move to the next scene. Right now it loops.
-
-
-
-
+When a scene ends the next scene should start (at the moment videos loop)

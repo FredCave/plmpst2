@@ -60,6 +60,11 @@ var Info = {
 			self.infoSectionToggle();
 		});
 
+		// $("#fullscreen").on("click", function(){
+		// 	console.log( 64, "Fullscreen click." );
+		// 	self.toggleFullScreen();
+		// });
+
 	},
 
 	hideInfo: function () {
@@ -283,9 +288,43 @@ var Info = {
 
 		console.log("Info.infoSectionToggle");
 
+	},
 
+	detectMobile: function () {
+
+		console.log("Info.detectMobile");
+
+		if ( Modernizr.touchevents || $(window).width() < 768 ) {
+			return true;
+		} else {
+			return false;
+		}
 
 	},
+
+	toggleFullScreen: function () {
+
+		console.log("Info.toggleFullScreen");
+		
+		if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+			if (document.documentElement.requestFullScreen) {  
+				document.documentElement.requestFullScreen();  
+			} else if (document.documentElement.mozRequestFullScreen) {  
+				document.documentElement.mozRequestFullScreen();  
+			} else if (document.documentElement.webkitRequestFullScreen) {  
+				document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+			}  
+		} else {  
+			if (document.cancelFullScreen) {  
+				document.cancelFullScreen();  
+			} else if (document.mozCancelFullScreen) {  
+				document.mozCancelFullScreen();  
+			} else if (document.webkitCancelFullScreen) {  
+				document.webkitCancelFullScreen();  
+			}  
+		}  
+
+	}, 
 
 }
 

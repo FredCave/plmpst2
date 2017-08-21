@@ -111,7 +111,7 @@ var Objects = {
 				width = $("#objects_wrapper").width() + 60;
 				height = $("#objects_wrapper").outerHeight() - 200;
 
-			console.log( 101, canvas.clientHeight, height );
+			// console.log( 101, canvas.clientHeight, height );
 
 			$("#canvas").css({
 				// "width" : width,
@@ -131,7 +131,7 @@ var Objects = {
 	            requestAnimationFrame( function(){
 	                animate();
 	            });
-	        }, 1000 / 12 );
+	        }, 1000 / 1 );
 
 			// requestAnimationFrame( animate );
 
@@ -150,9 +150,10 @@ var Objects = {
 			renderer.setScissorTest( false );
 			renderer.clear();
 
-			// // renderer.setClearColor( 0xe0e0e0 );
+			// renderer.setClearColor( 0xe0e0e0 );
 			renderer.setScissorTest( true );
 
+			var sceneIndex = 1;
 			scenes.forEach( function( scene ) {
 
 				// ROTATE ELEMENTS
@@ -165,30 +166,33 @@ var Objects = {
 				// GET ITS POSITION OF EACH SCENE RELATIVE TO THE PAGE'S VIEWPORT
 				var rect = element.getBoundingClientRect();
 
-				// check if it's offscreen. If so skip it
-				if ( rect.bottom + scrollTop < 0 || rect.top + scrollTop > renderer.domElement.clientHeight ||
+				// MODIFICATION
+				// NEED POSITION RELATIVE TO DOCUMENT **NOT** VIEWPORT
+				var calcTop = rect.top + window.scrollY,
+					calcBottom = rect.bottom + window.scrollY;
+
+				// CHECK IF OFFSCREEN : IF SO SKIP IT
+				if ( calcBottom < 0 || calcTop > renderer.domElement.clientHeight ||
 					 rect.right  < 0 || rect.left > renderer.domElement.clientWidth ) {
-					console.log( scene.name, " offscreen" );
-					return;  // it's off screen
+					// console.log( scene.name, " offscreen" );
+					return;
 				}
 
 				// CALC THE VIEWPORT
 				var width  = rect.right - rect.left;
-				var height = rect.bottom - rect.top;
+				// var height = rect.bottom - rect.top;
+				var height = calcBottom - calcTop;
 				var left   = rect.left - 60;
-				var top    = rect.top ;
+				// var top    = rect.top;
+				var top    = calcTop;
 
 				if ( scene.name === "gate" ) {
-					console.log( 162, top, height );
-
+					// console.log( 162, top, height );
 				}
-				// SET VIEWPORT FOR EACH SCENE
-				
-				// ADD SCROLL DISTANCE
-				// console.log( 161, $(window).scrollTop() );
 
-				renderer.setViewport( left, top + scrollTop, width, height );
-				renderer.setScissor( left, top + scrollTop, width, height );
+				// SET VIEWPORT FOR EACH SCENE
+				renderer.setViewport( left, top, width, height );
+				renderer.setScissor( left, top, width, height );
 
 				var camera = scene.userData.camera;
 
@@ -199,9 +203,24 @@ var Objects = {
 
 				renderer.render( scene, camera );
 
+				sceneIndex++;
+
 			} );
 
 		}
+
+	},
+
+	canvasSize: function () {
+
+		console.log( 216, "Objects.canvasSize" );
+
+		console.log( 218, $("#objects_wrapper").height(), $("#canvas").height() );
+
+		$("#canvas").css({
+			"width" 	: $("#objects_wrapper").width(),
+			"height" 	: $("#objects_wrapper").height() + $(window).height()
+		});
 
 	}
 

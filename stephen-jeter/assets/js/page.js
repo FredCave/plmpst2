@@ -8,28 +8,15 @@ var Page = {
 
 		console.log("Page.init");
 
-		Info.init();
+		// Info.init();
 
 		this.bindEvents();
 
+        this.portraitsInit();
+
 		this.videoSize();
 
-        var portrait_2 = $("#portrait_2").get(0);
-        
-        portrait_2.play();
-
-		// CREATE PLAYERS
-		this.player_1 = new Vimeo.Player( $("#video_1") );
-        this.player_1.setAutopause(false);
-		this.player_1.pause();
-
-		this.player_2 = new Vimeo.Player( $("#video_2") );
-        this.player_2.setAutopause(false);
-        this.player_2.pause();
-
-		this.player_3 = new Vimeo.Player( $("#video_3") );
-        this.player_3.setAutopause(false);
-        this.player_3.pause();
+        // window.scrollTo(0,1);
 
 	},
 
@@ -58,6 +45,56 @@ var Page = {
         }, 250 ));
 
 	},
+
+    portraitsInit: function () {
+
+        console.log("Page.portraitsInit");
+
+        var self = this,
+            i = 0;
+
+        $(".portrait_wrapper").each( function(){
+
+            var video = $(this).find("video").get(0);
+            if ( self.winW > 768 ) {
+                // REPLACE SOURCE
+                var srcStr = $(video).find("source").attr("src"), 
+                    newSrc = srcStr.replace("_small", "_large");
+                $(video).find("source").attr("src",newSrc);
+            }
+
+            video.oncanplay = function() {
+                // FADE IN
+                $(video).parent().fadeIn(1000);
+                i++;
+                // IF THIRD VIDEO LOADED
+                if ( i === 3 ) {
+                    self.vimeoVideosInit();
+                }
+            };
+
+        });
+
+    },
+
+    vimeoVideosInit: function () {
+
+        console.log("Page.vimeoVideosInit");
+
+        // CREATE VIMEO PLAYERS
+        this.player_1 = new Vimeo.Player( $("#video_1") );
+        this.player_1.setAutopause(false);
+        this.player_1.pause();
+
+        this.player_2 = new Vimeo.Player( $("#video_2") );
+        this.player_2.setAutopause(false);
+        this.player_2.pause();
+
+        this.player_3 = new Vimeo.Player( $("#video_3") );
+        this.player_3.setAutopause(false);
+        this.player_3.pause();
+
+    },
 
 	videoSize: function () {
 

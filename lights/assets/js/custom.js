@@ -9,19 +9,11 @@ var Page = {
 		console.log("Page.init");
 
 		// MOBILE TEST
-		// var mobile = true;
-		console.log( 13, Modernizr.touchevents );
-		if ( Modernizr.touchevents ) {
-
-			console.log( 15, "Mobile version." );
+		if ( Info.detectMobile() ) {
 			$("#mobile_wrapper").fadeIn(1000);
-
 		} else {
-
-			console.log( 19, "Desktop version." );
 			$("#wrapper").fadeIn(1000);
 			this.audioInit();
-
 		}
 
 		this.bindEvents();
@@ -37,13 +29,17 @@ var Page = {
 		var timeout,
 			self = this;
 
-		$("#button").on("touchstart", function(){
+		$("#button").on( "click", function(){
 
-			$("#mobile_wrapper").hide();
+			// self.audioInit();
+			var player = $("#audio_1")[0];
+			player.loop = true;
+			player.play();
+
 			setTimeout( function(){
-				$("#wrapper").fadeIn(1000);
-				self.audioInit();					
-			}, 100 );
+				$("#mobile_wrapper").hide();
+				$("#wrapper").fadeIn(1000);				
+			}, 50 );
 		
 		});
 

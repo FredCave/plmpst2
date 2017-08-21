@@ -8,7 +8,7 @@ var Page = {
 
 		console.log("Page.init");
 
-		// Info.init();
+		Info.init();
 
 		Webcam.init();
 
@@ -17,6 +17,8 @@ var Page = {
 		this.contentSize();
 
 		this.slideshowsLoad();
+
+		Twitter.init();
 
 	},
 
@@ -27,25 +29,25 @@ var Page = {
 		var self = this;
 
 		$(".group_one").on( "mouseover", function() {
-			$(".group_one").css({
+			$(".group_one").not(".no_filter").css({
 				"filter" : "grayscale(0%)"
 			});
 		});
 		
 		$(".group_one").on( "mouseout", function() {
-			$(".group_one").css({
+			$(".group_one").not(".no_filter").css({
 				"filter" : ""
 			});
 		});
 
 		$(".group_two").on( "mouseover", function() {
-			$(".group_two").css({
+			$(".group_two").not(".no_filter").css({
 				"filter" : "grayscale(0%)"
 			});
 		});
 		
 		$(".group_two").on( "mouseout", function() {
-			$(".group_two").css({
+			$(".group_two").not(".no_filter").css({
 				"filter" : ""
 			});
 		});
@@ -92,6 +94,27 @@ var Page = {
 			"top"	 : frameTop
 		});
 
+		// RESIZE YOUTUBE PLAYER
+		var ytRect = document.getElementById("youtube_playlist").getBoundingClientRect();
+		var ytHeight = this.winH - ytRect.top,
+			ytWidth = ytRect.right;
+
+		$("#youtube_playlist iframe").css({
+			"width" : ytWidth,
+			"height" : ytHeight
+		});
+		
+		// RESIZE TWITTER WRAPPER
+		var twRect = document.getElementById("twitter_wrapper").getBoundingClientRect();
+		var twHeight = twRect.bottom,
+			twWidth = twRect.right - twRect.left;
+
+		$("#twitter_wrapper ul").css({
+			"width" : twWidth,
+			"height" : twHeight
+		});
+
+
 	},
 
 	slideshowsLoad: function () {
@@ -100,21 +123,27 @@ var Page = {
 
 		var self = this;
 
+		// HACK TO GET CORRECT POST ID ON BOTH LOCALHOST AND SERVER
+		var postId = 22;
+		if ( ROOT.indexOf("localhost") > -1 ) {
+			postId = 14;
+		}
+
 		// GET POST INFO
 		$.ajax({
-		    url: ROOT + "/wp-json/wp/v2/posts/14",
-		    // url: ROOT + "/wp-json/wp/v2/posts/22", // 22 ON SERVER
+		    url: ROOT + "/wp-json/wp/v2/posts/" + postId,
 		    success: function(data) {
 
 				self.slideshowData = data.acf;
-				self.loadWebcamArchive();
 
 				// ELEMENTS FOR WEBCAM
 				Webcam.imagesFrames = data.acf.webcam_frames;
 				Webcam.imagesDraggable = data.acf.webcam_draggable;
 				Webcam.imagesTracking = data.acf.webcam_tracking;
 
-				Webcam.initialState( data.acf.webcam_archive_images );
+				// Webcam.initialState( data.acf.webcam_archive_images );
+
+				self.slideshowsInit();
 
 		    },
 		    error: function(errorThrown){
@@ -123,25 +152,6 @@ var Page = {
 		}); 
 
 	}, 
-
-	loadWebcamArchive: function () {
-
-		console.log("Page.loadWebcamArchive");
-
-		var self = this;
-
-		$.ajax({
-			type: "GET",
-			url: ROOT + "/_tmp_dir/get_server_files.php",
-			dataType: "json"
-		}).done( function(data) {
-		
-			self.webcamImages = data;
-			self.slideshowsInit();
-
-		});
-
-	},
 
 	shuffle: function ( a ) {
         var j, x, i;
@@ -157,8 +167,13 @@ var Page = {
 
 		console.log("Page.slideshowsInit");
 
+		// IF MOBILE: REMOVE CSS GRAYSCALE FILTER
+		if ( Info.detectMobile() ) {
+			$(".slideshow_wrapper").css("filter","none").addClass("no_filter");
+		}
+
 		// CREATE ARRAY OF IMAGES + MOVIES
-		this.slideshowContent = this.slideshowData.images.concat( this.slideshowData.movies ).concat( this.webcamImages );
+		this.slideshowContent = this.slideshowData.images.concat( this.slideshowData.movies );
 
 		// SHUFFLE ARRAY
 		this.shuffle( this.slideshowContent );
@@ -171,15 +186,26 @@ var Page = {
 		function sendToFrames ( init ) {
 			console.log("Page.slideshowsInit.sendToFrames");
 
+			// ROLL A DICE TO KNOW IF VIDEOS SHOULD BE INCLUDED OR NOT
+			var dice = Math.random();
+			self.movieQuota = 0;
+			if ( dice > 0.5 ) {
+				self.movieQuota = 1;
+			} 
+			// console.log( 200, "Movie quota is ", self.movieQuota );
+
 			// GET 2 HORIZONTAL + 2 VERTICAL (MOVIES ARE HORIZONTAL)
 			// PUSH TO currentVert + currentHoriz
 			for ( var i = self.slideshowContent.length - 1; i >= 0; i-- ) {
+				
 				var elem = self.slideshowContent[i];
-				// IF WEBCAM IMAGE
-				if ( typeof elem === 'string' && elem.indexOf("images/img_") > -1 ) {
-					if ( currentVert.length < 2 ) {
-						currentVert.push( self.slideshowContent.splice(i,1) );
-					}
+				
+				if ( 'movie' in elem ) {
+					// console.log( 195, "Webcam running: ", Webcam.running );
+					if ( !Webcam.running && currentHoriz.length < 2 ) {
+						currentHoriz.push( self.slideshowContent.splice(i,1) );	
+						self.movieQuota = 0;
+					}	
 				// ELSE IF IMAGE: SORT INTO VERT AND HORIZ
 				} else if ( 'image' in elem ) {
 					if ( elem['image']['height'] > elem['image']['width'] ) {
@@ -187,15 +213,13 @@ var Page = {
 							currentVert.push( self.slideshowContent.splice(i,1) );
 						}
 					} else {
-						if ( currentHoriz.length < 2 ) {
+						// IF MOVIE QUOTA IS 1: KEEP GOING
+						if ( currentHoriz.length < 2 && self.movieQuota === 0 ) {
 							currentHoriz.push( self.slideshowContent.splice(i,1) );
 						}
 					}
-				} else { // ELSE MOVIES
-					if ( currentHoriz.length < 2 ) {
-						currentHoriz.push( self.slideshowContent.splice(i,1) );	
-					}				
 				}
+
 			}
 			
 			var delay_2 = 4000,
@@ -252,19 +276,18 @@ var Page = {
 
 			// IF WEBCAM IMAGE STRING
 			if ( typeof image[0] === 'string') {
-				imgSrc = MAIN_ROOT + "_tmp_dir/" + image;
+				imgSrc = image;
 			} else {
 
-				// GET TARGET WIDTH
 				var imgSizes = image[0]["image"].sizes; 
 					
 				// VERT TARGETS
 				if ( target === "#slideshow_1" || target === "#slideshow_4" ) {
 					targetW = targetH;
 				}
-				
+				// GET TARGET WIDTH
 				if ( targetW <= 400 ) {
-					imgSrc = imgSizes.mediuam;
+					imgSrc = imgSizes.medium;
 				} else if ( targetW > 400 && targetW <= 600 ) {
 					imgSrc = imgSizes.medium_large;
 				} else if ( targetW > 600 && targetW <= 768 ) {
@@ -277,14 +300,25 @@ var Page = {
 
 			}
 
-			$(target).css("background-image","url('" + imgSrc + "')");
+			// PRELOAD IMAGE AND THEN INJECT INTO WRAPPER
+			var img = img = new Image();
+			$(img).attr("src", imgSrc ).on("load", function(){
+				_.defer( function(){
+					$(target).empty().css("background-image","url('" + imgSrc + "')");					
+				});
+			});
 
 		} else {
 
+			var movieClass = "";
+			if ( image[0].movie.width <= image[0].movie.height ) {  
+				movieClass = "full_width";
+			}
+
 			// MOVIE
-			$(target).append("<video id='video' muted autoplay><source src='" + image[0]['movie'].url + "' type='video/mp4'></video>");
+			$(target).empty().append("<video id='video' class='" + movieClass + "' muted autoplay playsinline><source src='" + image[0]['movie'].url + "' type='video/mp4'></video>");
 			$("#video").on( "ended", function(){
-			
+				// console.log( 313, "Video ended." );
 				// INJECT NEW IMAGE
 				for ( var i = self.slideshowContent.length - 1; i >= 0; i-- ) {
 					var elem = self.slideshowContent[i];
@@ -303,6 +337,40 @@ var Page = {
 			});
 
 		}
+
+	},
+
+	removeVideos: function () {
+
+		console.log("Page.removeVideos");
+
+		var self = this;
+
+		// CALLED FROM WEBCAM OBJECT TO AVOID ANY CONFLICTS BETWEEN IT AND THE VIDEOS
+		$(".slideshow_wrapper").each( function(){
+
+			var wrapper = $(this);
+
+			if ( $(this).find("video").length ) {
+				// console.log( 318, "Video needs removing." );
+				_.delay( function(){
+					// INJECT NEW IMAGE
+					for ( var i = self.slideshowContent.length - 1; i >= 0; i-- ) {
+						var elem = self.slideshowContent[i];
+						// GET ONLY ONE HORIZONTAL IMAGES
+						if ( 'image' in elem ) {
+							if ( elem['image']['height'] < elem['image']['width'] ) {
+								var image = self.slideshowContent.splice(i,1);
+								self.injectImage( "#" + wrapper.attr("id"), image );
+								break;
+							} 
+						} 
+					}
+					wrapper.empty();
+				}, 2000 );
+			}
+
+		});
 
 	}
 

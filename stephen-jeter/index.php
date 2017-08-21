@@ -11,20 +11,22 @@
 
 		<div id="intro_portraits">
 			<div id="portrait_wrapper_1" class="portrait_wrapper" data-link="video_1">
-				<?php /* <video id="portrait_1" class="portrait_video" playsinline>
-					<source data-src="<?php bloginfo("stylesheet_directory"); ?>/assets/video/Bashar Portrait.mp4" />
-				</video> */?>
+				<video id="portrait_1" class="portrait_video" autoplay muted loop playsinline>
+					<source src="<?php bloginfo("stylesheet_directory"); ?>/assets/video/bashar_small.mp4" />
+				</video> 
 			</div>
+
 			<div id="portrait_wrapper_2" class="portrait_wrapper" data-link="video_2">
 				<video id="portrait_2" class="portrait_video" autoplay muted loop playsinline>
-					<source src="<?php bloginfo("stylesheet_directory"); ?>/assets/video/ISSA Portrait.mp4" />
+					<source src="<?php bloginfo("stylesheet_directory"); ?>/assets/video/waseem_small.mp4" />
 				</video>
 			</div>
 			<div id="portrait_wrapper_3" class="portrait_wrapper" data-link="video_3">
-				<?php /* <video id="portrait_2" class="portrait_video" muted loop playsinline>
-					<source data-src="<?php bloginfo("stylesheet_directory"); ?>/assets/video/Bashar Portrait.mp4" />
-				</video> */?>
+				<video id="portrait_3" class="portrait_video" autoplay muted loop playsinline>
+					<source src="<?php bloginfo("stylesheet_directory"); ?>/assets/video/issa_small.mp4" />
+				</video>
 			</div>
+
 		</div>
 
 		<!-- FULL SCREEN VIDEOS -->

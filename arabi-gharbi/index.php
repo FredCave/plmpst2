@@ -12,7 +12,12 @@
 
 			<!-- YOUTUBE PLAYLIST -->
 			<div id="youtube_playlist">
-				<iframe src="https://www.youtube.com/embed/videoseries?list=PLGf0_dz21-MM7XIwmazK0dSXL7sbK1Ns1&autoplay=1"></iframe>
+				<?php
+				// RANDOM STARTING POINT FOR PLAYLIST
+				$randIndex = mt_rand( 0, 24 );
+				?>
+				<iframe type="text/html" width="720" height="405" src="https://www.youtube.com/embed/?autoplay=1&fs=0&list=PLGf0_dz21-MM7XIwmazK0dSXL7sbK1Ns1&listType=playlist&loop=1&playsinline=1&rel=0&showinfo=0&index=<?php echo $randIndex; ?>&color=white&iv_load_policy=3" frameborder="0" allowfullscreen>
+				</iframe>
 			</div>
 
 			<div id="slideshow_1" class="slideshow_wrapper group_one"></div>
@@ -20,13 +25,27 @@
 			<div id="slideshow_3" class="slideshow_wrapper group_one"></div>
 			<div id="slideshow_4" class="slideshow_wrapper group_two"></div>
 
+			<!-- TWITTER -->
+			<div id="twitter_wrapper" style="background-image:url('<?php bloginfo('stylesheet_directory'); ?>/assets/img/twitter_back.jpg')">
+				<ul></ul>
+			</div>
+
 			<!-- WEBCAM -->
 			<div id="webcam">
 				<video id="webcam_video" width="1280" height="960" preload autoplay loop muted></video>
 				<canvas id="canvas" width="1280" height="960"></canvas>
 
 				<div id="webcam_access_screen">
-					<p>Please allow access to your webcam above</p>
+					<p>Please allow access to the webcam in your browser</p>
+					<span class="terms">
+						<a target="_blank" href="http://jerusalempalimpsest.com/Arabi-Arabi Terms of Use.pdf">
+							Terms of Use
+						</a>
+					</span>
+				</div>
+
+				<div id="webcam_error_screen">
+					<p>Webcam access is not supported on your browser.<br> Please try Chrome or Firefox.</p>
 				</div>
 
 				<div id="webcam_initial_image"></div>
@@ -45,10 +64,14 @@
 
 				<div id="webcam_success">
 					<p>Mabruk!</p>
-					<p>Would you like to add your portrait to the Arabi-Gharbi archive?</p>
+					<p>Would you like to add your portrait to the Arabi-Arabi archive?</p>
 					<div id="webcam_success_yes" class="webcam_button"><p>Yes</p></div>
 					<div id="webcam_success_no" class="webcam_button"><p>No</p></div>
 				</div>
+
+				<audio id="cam_click">
+					<source src="<?php bloginfo('stylesheet_directory'); ?>/assets/audio/cam_click.mp3" />
+				</audio>
 
 			</div>
 			
@@ -56,13 +79,14 @@
 
 		<div id="frame" style="background-image:url('<?php bloginfo('stylesheet_directory'); ?>/assets/img/frame.png')" ></div>
 
-		<?php 
-		echo "before:";
-		include("includes/get_server_files.php"); 
-		echo "after:";
-		?>
-
 		<!-- #INFO APPENDED AT END OF #WRAPPER FROM __INFO.PHP -->
+	</div>
+
+	<div id="comment_wrapper">
+		<?php 
+		// ATTEMPT AT POSTING WEBCAM IMAGES THROUGH COMMENT FORM
+		comment_form(); 
+		?>
 	</div>
 
 	<?php 
@@ -75,7 +99,7 @@
 	}
 	?>
 
-
+	<script src="https://platform.twitter.com/widgets.js"></script>
 	<script src="<?php bloginfo('stylesheet_directory'); ?>/js/tracking-min.js"></script>
 	<script src="<?php bloginfo('stylesheet_directory'); ?>/js/scripts.min.js"></script>
 

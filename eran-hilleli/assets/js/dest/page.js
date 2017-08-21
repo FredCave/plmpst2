@@ -17,6 +17,11 @@ var Page = {
 
 		this.audioInit();
 
+		// FADE OUT SCROLL TO START
+		setTimeout( function(){	
+			$("#scroll_to_start").fadeOut( 1000 );
+		}, 3500 );
+
 	}, 
 
 	bindEvents: function () {
@@ -25,19 +30,32 @@ var Page = {
 
 		var self = this;
 
-		var lethargy = new Lethargy();
-
 		$(window).on("mousewheel DOMMouseScroll wheel", _.throttle( function(e) {
 
-		    e.preventDefault()
-		    // e.stopPropagation();
-		    // if ( lethargy.check(e) !== false ) {
-				self.scrollManager(e.originalEvent);		
-		    // } else {
-		    // 	console.log( 37 );
-		    // }
+		    // e.preventDefault();
+			self.scrollManager(e.originalEvent);		
 
 		}, 100 ));
+
+		// MOBILE: TOUCHMOVE 
+		$(window).on('touchstart', function(e) {
+
+		    var swipe = e.originalEvent.touches,
+		    start = swipe[0].pageY;
+		    $(this).on('touchmove', function(e) {
+		        var contact = e.originalEvent.touches,
+		        end = contact[0].pageY,
+		        distance = end-start;
+		        if (distance < -30) { // UP 
+		        	self.imageNext();
+		        }
+		        if (distance > 30) { // DOWN
+					self.imagePrev();
+		        } 
+		    }).one('touchend', function() {
+		        $(this).off('touchmove touchend');
+		    });
+		});
 
 		$(window).on("resize", _.throttle( function(){
 

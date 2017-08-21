@@ -4,9 +4,14 @@ var Audio = {
 
 		console.log("Audio.init");
 
-		this.startMainLoop();
+        // NO MOBILE ON AUDIO
+        if ( !Info.detectMobile() ) {
 
-		this.startVoiceover();
+            this.startMainLoop();
+
+            this.startVoiceover();            
+
+        }
 
 	},
 
@@ -30,6 +35,19 @@ var Audio = {
                 $("#main_audio_" + current)[0].play();
             }, 696000 ); // 696000
         });
+
+        // START SRT AT SAME TIME AS THE AUDIO
+        $("#main_audio_1")[0].onplaying = function() {
+            console.log( 35, "Audio playing" );
+            SRT.init({
+                console : '#subtitles'
+            });
+            var SRT_URL = TEMPLATE + '/assets/srt/tohar_subs.srt';
+            SRT.get( SRT_URL, function(){
+                var skipSeconds = 0;
+                SRT.play( skipSeconds );
+            });
+        };
 
 	}, 
 

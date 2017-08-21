@@ -55,10 +55,10 @@ table {
 
 ****************************************/
 @font-face {
-  font-family: "FGrotesk";
+  font-family: "Palimpsest";
   font-weight: normal;
   font-style: normal;
-  src: url("assets/fonts/FGrotesk-Book.woff2") format("woff2"), url("assets/fonts/FGrotesk-Book.woff") format("woff");
+  src: url("assets/fonts/Palimpsest.woff2") format("woff2"), url("assets/fonts/Palimpsest.woff") format("woff");
 }
 /****************************************
 
@@ -68,7 +68,7 @@ table {
 /* line 32, style.scss */
 html {
   width: 100%;
-  height: 100%;
+  height: calc( 100% + 20px );
   background-color: black;
   overflow: hidden;
 }
@@ -79,16 +79,21 @@ body {
 }
 
 /* line 43, style.scss */
+#wrapper {
+  height: 100%;
+}
+
+/* line 48, style.scss */
 audio {
   display: none;
 }
 
-/* line 47, style.scss */
+/* line 52, style.scss */
 #video_sources {
   width: 100%;
   height: 100%;
 }
-/* line 50, style.scss */
+/* line 56, style.scss */
 #video_sources div {
   width: 100%;
   height: 100%;
@@ -97,65 +102,55 @@ audio {
   left: 0;
   opacity: 0;
 }
-/* line 57, style.scss */
+/* line 63, style.scss */
 #video_sources div iframe {
   width: 100%;
   height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
-  pointer-events: none;
 }
 
-/* line 69, style.scss */
-.hover_area {
-  border: 1px solid green;
-  position: fixed;
-  top: 0;
-  width: 40%;
-  height: 100vh;
-  display: none;
-}
-
-/* line 78, style.scss */
-#hover_area_right {
-  border: 1px solid orange;
-  right: 0;
-}
-
-/* line 84, style.scss */
+/* line 89, style.scss */
 #arrows {
   position: fixed;
+  z-index: 9999;
   width: calc( 100% - 48px );
+  height: 32px;
   top: 50%;
   left: 24px;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  -webkit-transform: translateY(-20px);
+          transform: translateY(-20px);
   display: none;
 }
-/* line 92, style.scss */
+/* line 99, style.scss */
 #arrows .arrow {
-  width: 28px;
+  width: 32px;
   height: auto;
   position: absolute;
   top: 0;
   cursor: pointer;
 }
-/* line 99, style.scss */
-#arrows .arrow img {
+/* line 106, style.scss */
+#arrows .arrow a {
+  height: 46px;
+  display: inline-block;
+}
+/* line 110, style.scss */
+#arrows .arrow a img {
   width: 100%;
   height: auto;
 }
-/* line 104, style.scss */
+/* line 117, style.scss */
 #arrows #arrow_right {
   right: 0;
   -webkit-transform: rotate(180deg) translateY(4px);
           transform: rotate(180deg) translateY(4px);
 }
 
-/* line 110, style.scss */
+/* line 123, style.scss */
 #counter {
-  font-family: "FGrotesk", helvetica, sans-serif;
+  font-family: "Palimpsest", helvetica, sans-serif;
   font-size: 1.1em;
   letter-spacing: 0.05em;
   position: fixed;
@@ -164,4 +159,19 @@ audio {
   color: white;
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7);
   display: none;
+}
+
+/* line 136, style.scss */
+#subtitles {
+  position: fixed;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  height: 80px;
+  color: white;
+  font-family: "Palimpsest", helvetica, arial, sans-serif;
+  line-height: 1.3;
+  font-size: 24px;
+  letter-spacing: 0.8px;
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.7);
 }

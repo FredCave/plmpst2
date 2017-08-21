@@ -1,5 +1,7 @@
 var Video = {
 	
+    videosQuiet: true,
+
     winH: $(window).height(), 
 
     winW: $(window).width(), 
@@ -12,7 +14,28 @@ var Video = {
 
         this.noVideos = $("#video_sources .video").length;
 
+        this.bindEvents();   
+
         this.loadVideos();
+
+        // ALL VIDEOS WITH SOUND ARE AT 50% VOLUME DURING FIRST MINUTE
+        setTimeout( function () {
+            self.videosQuiet = false;
+            // GET CURRENTLY PLAYING VIDEO & CHECK IF HAS SOUND
+            var currentVideo = $("#video_sources div").eq( self.currentVideo - 1 );
+            if ( currentVideo.hasClass("audio") ) {
+                // SET VOLUME TO ONE
+                var videoId = currentVideo.find("iframe").attr("id");
+                console.log( 30, "Volume increased on ", videoId );
+                self.vars["player-" + videoId].setVolume(0.6);
+                _.delay( function(){
+                   self.vars["player-" + videoId].setVolume(0.8); 
+                }, 250 );
+                _.delay( function(){
+                   self.vars["player-" + videoId].setVolume(1); 
+                }, 500 );
+            } 
+        }, 60000 );
 
 	}, 
 
@@ -31,18 +54,14 @@ var Video = {
 
         }, 250 ));
 
-        $(".arrow").on("click", function(){
-
-            if ( $(this).attr("id") === "arrow_right" ) {
-
+        $(".arrow a").on("click", function(e){
+            
+            e.preventDefault();
+            if ( $(this).parent().attr("id") === "arrow_right" ) {
                 self.changeVideo( "next" );
-
-            } else {
-
+            } else if ( $(this).parent().attr("id") === "arrow_left" ) {
                 self.changeVideo( "prev" );
-
             }
-
         });
 
     },
@@ -53,40 +72,68 @@ var Video = {
 
         var self = this;
 
-        this.resizeIframes(); 
-            
-        this.bindEvents();   
+        if ( Info.detectMobile() ) {
 
-        // CREATE JS PLAYERS FOR EACH VIDEO
-            // CREATE OBJECT FOR VARIABLE NAMES
-        this.vars = {};
-        $("#video_sources iframe").each( function(){
+            this.mobileInit();
 
-            self.vars["player-" + $(this).attr("id")] = new Vimeo.Player( $(this).attr("id") );
+        } else {
 
-            self.vars["player-" + $(this).attr("id")].setVolume(0);
-            self.vars["player-" + $(this).attr("id")].setAutopause(false);
+            this.resizeIframes(); 
+                
+            // CREATE JS PLAYERS FOR EACH VIDEO
+                // CREATE OBJECT FOR VARIABLE NAMES
+            this.vars = {};
+            $("#video_sources iframe").each( function(){
 
-        });
+                var selfElem = $(this);
 
-        console.log( 38, this.vars["player-video-1"], $("#video-1") );
+                var newSrc = $(this).attr("data-src");
+                console.log( 95, newSrc );
+                $(this).attr( "src", newSrc );
 
-        // PLAY + SHOW FIRST VIDEO
-        this.currentVideo = 1;
-        this.playVideo( this.vars["player-video-1"] );
-        this.loadNextPrev();
+                self.vars["player-" + $(this).attr("id")] = new Vimeo.Player( $(this).attr("id") );
 
-        // console.log( 81 );
+                self.vars["player-" + $(this).attr("id")].setVolume(0);
+                self.vars["player-" + $(this).attr("id")].setAutopause(false);
 
-        // SHOW ARROWS AFTER 10 SECONDS
-        _.delay( function(){
-            
-            $("#arrows").fadeIn( 1000 );
+                // WORKAROUND TO DETECT END OF VIDEO
+                self.vars["player-" + $(this).attr("id")].on( "timeupdate", _.throttle( function(data){
+                    // console.log( 93, "Time update", $(selfElem).attr("id"), data.percent );
+                    if ( data.percent >= 0.99 ) {
+                        // AND IF THIS IS CURRENT VIDEO
+                        var playerId = $(selfElem).attr("id").substr(-1);
+                        console.log( 98, "Video ended", playerId, " current: ", self.currentVideo );
+                        if ( parseInt(playerId) === self.currentVideo ) {
+                            self.changeVideo("next");
+                        }
+                    }
 
-            // LOAD + SHOW COUNTER
-            $("#counter").text("1/"+ self.noVideos).fadeIn( 1000 );
+                }, 1000 ));
 
-        }, 10000 );
+            });
+
+            // PLAY + SHOW FIRST VIDEO
+            this.currentVideo = 1;
+            this.playVideo( this.vars["player-video-1"] );
+
+            // TMP –> CAPTIONS????
+            // this.vars["player-video-1"].getTextTracks().then( function(tracks) {
+            //     console.log( 117, tracks );
+            // });
+
+            this.loadNextPrev();
+
+            // SHOW ARROWS AFTER 10 SECONDS
+            _.delay( function(){
+                
+                $("#arrows").fadeIn( 1000 );
+
+                // LOAD + SHOW COUNTER
+                // $("#counter").text("1/"+ self.noVideos).fadeIn( 1000 );
+
+            }, 10000 );
+
+        }
 
     },
 
@@ -144,6 +191,11 @@ var Video = {
 
         console.log("Video.changeVideo", direction );
 
+        if ( Info.detectMobile() ) {
+            this.mobileChangeVideo( direction );
+            return;
+        } 
+
         var number,
             self = this;
 
@@ -174,7 +226,11 @@ var Video = {
 
             if ( $("#"+targetId).parent().hasClass("audio") ) {
                 // SET VOLUME
-                this.vars["player-" + targetId].setVolume(1);
+                if ( this.videosQuiet ) {
+                    this.vars["player-" + targetId].setVolume(0.4);
+                } else {
+                    this.vars["player-" + targetId].setVolume(1);                    
+                }
                 console.log( 179, this.vars["player-" + targetId] );
             }
 
@@ -204,20 +260,7 @@ var Video = {
             console.log( 173, "Playing.", player.element );
             _.defer( function(){
                 $(player.element).parent().addClass("playing").css({ opacity : 1 }).siblings().css({ opacity : 0 });               
-                // IF AUDIO:
-                // console.log( 200, $(player.element).parent() );
-                // if ( $(player.element).parent().attr("data-audio") ) {
-                //     console.log( 202, "Audio!" );
-                //     // $(player.element).setVolume(1);
-                //     $(player.element).parent().addClass("audio");
-                // }
             });
-        });
-
-        player.on("ended", function(){
-            console.log( 205, "Video ended." );
-            // NAV TO NEXT VIDEO
-            self.changeVideo("next");
         });
 
     },
@@ -263,7 +306,6 @@ var Video = {
         this.vars["player-video-"+nextOfNext].pause();
         this.vars["player-video-"+nextOfNext].setVolume(0);
         $(this.vars["player-video-"+nextOfNext].element).parent().removeClass("playing");
-        // this.updatePosition( this.vars["player-video-"+nextOfNext] );
 
         var prevOfPrev = prev - 1;
         if ( prevOfPrev <= 0 ) {
@@ -273,16 +315,119 @@ var Video = {
         this.vars["player-video-"+prevOfPrev].pause();
         this.vars["player-video-"+prevOfPrev].setVolume(0);
         $(this.vars["player-video-"+prevOfPrev].element).parent().removeClass("playing");
-        // this.updatePosition( this.vars["player-video-"+prevOfPrev] );
 
     },
 
-    updatePosition: function ( player ) {
+    mobileInit: function () {
 
-        console.log("Video.updatePosition");
+        console.log("Video.mobileInit");
 
+        this.mobileVars = {};
 
+        $("iframe").css("height", $(window).height() ); 
+
+        // CREATE PLAYERS AS THEY ARE NEEDED
+        
+        // SHOW FIRST VIDEO
+        var thisId = $("#video_sources iframe").eq(0).attr("id"),
+            newSrc = $("#"+thisId).attr("data-src").replace("?background=1","");
+        $("#"+thisId).attr( "src", newSrc );
+        // this.mobileVars["player-" + thisId] = new Vimeo.Player( thisId );
+        this.mobilePlayer = new Vimeo.Player( thisId );
+        this.mobilePlayer.disableTextTrack().then(function() {
+            console.log(338, "Captions disabled.");
+        }).catch(function(error) {
+            console.log(340, error );
+        });
+        $("#"+thisId).parent().css({
+            "opacity" : "1", 
+            "z-index" : "9"
+        });
+        this.currentVideo = 1;
+
+        // SHOW ARROWS AFTER 10 SECONDS
+        _.delay( function(){
+            $("#arrows").fadeIn( 1000 );
+        }, 10000 );    
+
+        // this.mobileLoadNextPrev( thisId );
+
+    },
+
+    // mobileLoadNextPrev: function () {
+
+    //     console.log("Video.mobileLoadNextPrev");
+
+    //     var next = this.currentVideo + 1;
+    //     if ( next > this.noVideos ) {
+    //         next = 1;
+    //     }
+    //     // CHECK IF PLAYER EXISTS
+    //     if ( this.mobileVars["player-video-" + next] === undefined ) {
+    //         // IF NOT: CHANGE SRC & CREATE PLAYER
+    //         var nextSrc = $("#video-"+next).attr("data-src").replace("?background=1","");
+    //         $("#video-"+next).attr( "src", nextSrc );
+    //         this.mobileVars["player-video-" + next] = new Vimeo.Player( "video-" + next );
+    //     }
+
+    //     var prev = this.currentVideo - 1;
+    //     if ( prev <= 0 ) {
+    //         prev = this.noVideos;
+    //     }
+    //     // CHECK IF PLAYER EXISTS
+    //     if ( this.mobileVars["player-video-" + prev] === undefined ) {
+    //         // IF NOT: CHANGE SRC & CREATE PLAYER
+    //         var prevSrc = $("#video-"+prev).attr("data-src").replace("?background=1","");
+    //         $("#video-"+prev).attr( "src", prevSrc );
+    //         this.mobileVars["player-video-" + prev] = new Vimeo.Player( "video-" + prev );
+    //     }
+
+    // },
+
+    mobileChangeVideo: function ( direction ) {
+
+        console.log("Video.mobileChangeVideo");
+
+        var number,
+            self = this;
+
+        // HIDE CURRENT
+        this.mobilePlayer.pause();
+        this.mobilePlayer = null;
+        $("#video-"+this.currentVideo).parent(".video").css("opacity","0");
+
+        if ( direction === "next" ) {
+            number = this.currentVideo + 1;
+            if ( number > this.noVideos ) {
+                number = 1;
+            }
+        } else if ( direction === "prev" ) {
+            number = this.currentVideo - 1;
+            if ( number <= 0 ) {
+                number = this.noVideos;
+            }
+        }       
+        this.currentVideo = number;
+
+        // CREATE NEW PLAYER
+        var nextSrc = $("#video-"+number).attr("data-src").replace("?background=1","");
+        $("#video-"+number).attr( "src", nextSrc );
+        this.mobilePlayer = new Vimeo.Player( "video-" + number );
+
+        // PLAY
+        // this.mobileVars["player-video-" + number].play();
+       
+        // SHOW NEXT
+        $("#video-"+number).parent(".video").css({
+            "opacity" : "1", 
+            "z-index" : "99"
+        }).siblings().css({
+            "z-index" : ""            
+        });
+
+        // this.mobileLoadNextPrev();
 
     }
+
 
 }

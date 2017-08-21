@@ -19,7 +19,7 @@
 		endif; 
 		?>
 		
-		<div id="title_wrapper" data-600="filter: drop-shadow( 0px -80px 6px rgba( 0, 0, 0, 0.6 ) )" data-10="filter: drop-shadow( 0px 80px 6px rgba( 0, 0, 0, 0.6 ) )">
+		<div id="title_wrapper" data-600="filter: drop-shadow( 0px -80px 12px rgba( 0, 0, 0, 0.7 ) )" data-10="filter: drop-shadow( 0px 80px 12px rgba( 0, 0, 0, 0.7 ) )">
 			<div class="title" style="background-image:url('<?php bloginfo('stylesheet_directory'); ?>/assets/img/logo.svg')"></div>
 	 	</div>
 
