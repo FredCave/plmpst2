@@ -19,13 +19,13 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 html, body {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	background-color: black;
 }
 
 #wrapper {
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	width: 100%;
 	height: 100vh;
 }
@@ -39,11 +39,13 @@ html, body {
 		// border: 1px solid blue;
 		width: 100%;
 		height: 100%;	
-		iframe {
-			// border: 1px solid orange;
-			width: 100%;
-			height: 100%;
-		}	
+		pointer-events: none;
+		// iframe {
+		// 	// border: 1px solid orange;
+		// 	width: 100%;
+		// 	height: 100%;
+			
+		// }	
 	}
 }
 

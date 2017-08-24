@@ -1,19 +1,28 @@
 <?php get_header(); ?>
 
+	<?php 	
+	// CHECK IF PAGE WILL BE SHOWN IN BACKGROUND OF ANOTHER PAGE
+	$bg_var = get_query_var('background'); 
+	echo $bg_var;
+	?>
+
 	<div id="wrapper" data-id="6" data-bg="<?php echo $bg_var; ?>">
 
 		<?php 
 		// POSTCARDS
 		if ( have_rows("postcards") ) : ?>
-			<ul id="postcards">
-				<?php while ( have_rows("postcards")  ) : the_row(); ?>
-					<li>
-						<?php 
-						$image = get_sub_field("image");
-						image_object( $image ); 
-						?>
-					</li>
-				<?php endwhile; ?>
+			<ul id="postcards" data-top="margin-top: 0vh" data-bottom="margin-top: -200vh">
+				<?php 
+				for ( $i = 0; $i < 2; $i++ ) {
+					while ( have_rows("postcards") ) : the_row(); ?>
+						<li>
+							<?php 
+							$image = get_sub_field("image");
+							image_object( $image ); 
+							?>
+						</li>
+				<?php endwhile;
+				} ?>
 			</ul>
 		<?php 
 		endif; 
@@ -23,19 +32,24 @@
 			<div class="title" style="background-image:url('<?php bloginfo('stylesheet_directory'); ?>/assets/img/logo.svg')"></div>
 	 	</div>
 
-		<canvas id="canvas"></canvas>
-
 		<!-- OBJECTS APPENDED HERE -->
-		<div id="objects_wrapper">
-		</div>
+		<div id="wallmart_content"></div>
 
 	</div>
+
+	<canvas id="wallmart_canvas"></canvas>
+
+	<!-- TMP -->
+	<script id="template" type="notjs">
+			<div class="scene"></div>
+	</script>
+
 
 	<?php 
 	// IF NOT BACKGROUND
 	if ( !$bg_var ) {
 		$title = "Wallmart";
-		$artist = "Firas A. Sirriyeh";
+		$artist = "Firas Abu Sirriyeh";
 		include_once( get_template_directory() . '/includes/artist_info.php' );
 		include_once( get_template_directory() . '/includes/main_info.php' );
 	}

@@ -51,51 +51,38 @@ table {
 
 /****************************************
 
-	FONTS
-
-****************************************/
-@font-face {
-  font-family: "Palimpsest";
-  font-weight: normal;
-  font-style: normal;
-  src: url("assets/fonts/Palimpsest.woff2") format("woff2"), url("assets/fonts/Palimpsest.woff") format("woff");
-}
-/****************************************
-
 	GENERAL
 
 ****************************************/
-/* line 32, style.scss */
+/* line 19, style.scss */
 html, body {
   width: 100%;
   height: 100%;
   background-color: black;
 }
 
-/* line 38, style.scss */
+/* line 25, style.scss */
 #wrapper {
   position: fixed;
-  /*	z-index: 1;*/
-  top: 0;
+  bottom: 0;
   width: 100%;
   height: 100vh;
 }
 
-/* line 46, style.scss */
+/* line 32, style.scss */
 #wrapper img {
   width: auto;
   min-height: 100%;
 }
 
-/* line 51, style.scss */
+/* line 37, style.scss */
 #intro_portraits {
   position: fixed;
-  z-index: 99;
   width: 100%;
   height: 100%;
   opacity: 1;
 }
-/* line 58, style.scss */
+/* line 44, style.scss */
 #intro_portraits .portrait_wrapper {
   position: absolute;
   top: 0;
@@ -105,7 +92,7 @@ html, body {
   cursor: pointer;
   display: none;
 }
-/* line 67, style.scss */
+/* line 53, style.scss */
 #intro_portraits .portrait_wrapper video {
   position: absolute;
   top: 0;
@@ -115,21 +102,21 @@ html, body {
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
 }
-/* line 76, style.scss */
+/* line 62, style.scss */
 #intro_portraits #portrait_wrapper_2 {
   left: 33.333%;
 }
-/* line 79, style.scss */
+/* line 65, style.scss */
 #intro_portraits #portrait_wrapper_3 {
   left: 66.667%;
 }
 
-/* line 84, style.scss */
+/* line 70, style.scss */
 #videos {
   width: 100%;
   height: 100%;
 }
-/* line 87, style.scss */
+/* line 73, style.scss */
 #videos iframe {
   width: 100%;
   height: 100vh;
@@ -138,45 +125,4 @@ html, body {
   left: 0;
   pointer-events: none;
   display: none;
-}
-
-/* line 99, style.scss */
-#back_button {
-  position: fixed;
-  bottom: 72px;
-  left: 36px;
-  height: 24px;
-  font-family: "Palimpsest", helvetica, arial;
-  font-size: 24px;
-  color: white;
-  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
-  -webkit-transition: text-shadow 0.5s;
-  transition: text-shadow 0.5s;
-  letter-spacing: 0.8px;
-  display: none;
-}
-/* line 111, style.scss */
-#back_button a {
-  color: white;
-  text-decoration: none;
-}
-/* line 115, style.scss */
-#back_button img {
-  height: 22px;
-  min-height: 0;
-  width: auto;
-  -webkit-filter: drop-shadow(0px 0px 8px white);
-          filter: drop-shadow(0px 0px 8px white);
-  margin-right: 16px;
-  margin-bottom: -2px;
-}
-
-/* line 125, style.scss */
-#back_button:hover {
-  text-shadow: 1px 1px 10px white;
-}
-/* line 127, style.scss */
-#back_button:hover img {
-  -webkit-filter: drop-shadow(0px 0px 10px white);
-          filter: drop-shadow(0px 0px 10px white);
 }

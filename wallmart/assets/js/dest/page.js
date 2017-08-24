@@ -6,15 +6,19 @@ var Page = {
 
 	geometries : [],
 
+	currentNoCards : 9, 
+
 	init: function () {
 
 		console.log("Page.init");
 
 		Info.init();
 
+		var self = this;
+
 		this.imagesSize();
 
-		if ( !Info.detectMobile() ) {
+		if ( Info.detectMobile() ) {
 			// this.mobileInit();
 		} else {
 			this.scrollInit();
@@ -23,8 +27,15 @@ var Page = {
 
 		this.bindEvents();
 
-		// LOAD GEOMETRIES
-		this.geometryLoader();
+		// ONLY LOAD GEOMETRIES IF NOT BACKGROUND MODE
+		if ( $("#wrapper").attr("data-bg") !== "true" ) {
+			this.geometryLoader();
+		}
+
+		_.delay( function(){
+			// self.imageHeightCheck();
+			self.wrapperHeightCheck();
+		}, 2000 );
 		
 	},
 
@@ -39,14 +50,17 @@ var Page = {
 			self.imagesSize();
 			Objects.canvasSize();
 
+			// self.imageHeightCheck();
+			self.wrapperHeightCheck();
+
 		}, 1000 ));
 
 
-		$(window).on("scroll", _.throttle( function(){
+		// $(window).on("scroll", _.throttle( function(){
 
-			// console.log( 43, $("#canvas").height(), $("#objects_wrapper").height() );
+			
 
-		}, 500 ));
+		// }, 500 ));
 
 	},
 
@@ -104,8 +118,8 @@ var Page = {
 		$("#postcards li").each( function(i){
 
 			$(this).find(".postcard_image").attr({
-				"data-top-bottom"   : "top:0px",
-				"data-bottom-top" 	: "top:-20%"
+				"data-top-bottom"   : "top:    0%",
+				"data-bottom-top" 	: "top:-11.2%"
 			});
 			
 		});
@@ -129,8 +143,11 @@ var Page = {
 				// IF PALESTINIAN OBJECT (SHOULD BE LAST FILE...?)
 				if ( filename === "palestinian_village" ) {
 					_.delay( function(){
-						Objects.init();
+						
+						NewObjects.run();
+						// Objects.init();
 						self.captionsLoader();
+
 					}, 500);
 				}
 			});
@@ -145,16 +162,100 @@ var Page = {
 
 		var self = this;
 
-		$("#objects_wrapper .list-item").each( function(i){
+		$("#wallmart_content .list-item").each( function(i){
+			console.log( 165 );
 			var captionHtml = "<div class='caption'>";
 				captionHtml += "<img src='" + TEMPLATE + "/assets/img/caption_" + self.filenames[i] + ".svg' />";
 				captionHtml += "</div>";
 			$(this).append( captionHtml );
 			$(this).find(".caption").fadeIn(1000);
-
 		});
 
+	},
+
+	// imageHeightCheck: function () {
+
+	// 	console.log("Page.imageHeightCheck");
+
+	// 	// IF STILL TWO COLUMNS: RETURN
+	// 	// if ( $(window).width() > 1024 ) {
+	// 	// 	return;
+	// 	// }
+
+	// 	// GET OBJECT_WRAPPER HEIGHT + POSTCARD_WRAPPER HEIGHT
+	// 	var winH = $(window).height(), 
+	// 		objectsH = winH + $("#objects_wrapper").height(),
+	// 		postcardsH = $("#postcards").height() + parseInt( $("#postcards").css("margin-top") );
+	// 	console.log( 172, objectsH, postcardsH );
+
+	// 	// ADD POSTCARDS
+	// 	if ( objectsH > postcardsH && !this.heightFixed ) {
+	// 		// NEED TO APPEND SOME POSTCARDS
+	// 			// FIX BODY HEIGHT
+	// 		this.heightFixed = true;
+	// 		$("body").css({
+	// 			"height" 	: objectsH + 20, 
+	// 			"overflow" 	: "hidden"
+	// 		});
+	// 		// GET DIFF
+	// 		var diff = objectsH - postcardsH,
+	// 			toAdd = Math.ceil( diff / winH );
+
+	// 		console.log( 188, diff, objectsH, postcardsH );
+
+	// 		// CLONE POSTCARDS FROM BEGINNING
+	// 		for ( var i = 0; i < toAdd; i++ ) {
+	// 			$("#postcards li").eq(i).clone().appendTo( $("#postcards") );
+	// 		}
+
+	// 		this.heightFixed = false;
+
+	// 	// REMOVE POSTCARDS
+	// 	} else {
+
+	// 		// // FIX BODY HEIGHT
+	// 		// this.beingFixed = true;
+	// 		// $("body").css({
+	// 		// 	"height" 	: objectsH + 20, 
+	// 		// 	"overflow" 	: "hidden"
+	// 		// });
+	// 		// // GET DIFF
+	// 		// var diff = objectsH - postcardsH,
+	// 		// 	toRemove = Math.ceil( diff / winH );
+
+	// 		// console.log( 211, toRemove );
+
+	// 	}
+
+	// }, 
+
+	wrapperHeightCheck: function () {
+
+		console.log("Page.wrapperHeightCheck");
+
+		// GET OBJECT_WRAPPER HEIGHT + POSTCARD_WRAPPER HEIGHT
+		var winH = $(window).height(), 
+			objectsH = ( winH * 1.5 ) + $("#wallmart_content").height(),
+			wrapperH = $("#wrapper").height();
+			// postcardsH = $("#postcards").height() + parseInt( $("#postcards").css("margin-top") );
+		console.log( 172, objectsH, wrapperH );
+
+		// GET DIFF
+		var diff = objectsH - wrapperH,
+			diffNoCards = Math.ceil( diff / winH ),
+			newHeight = this.currentNoCards + diffNoCards;
+
+			console.log( 253, this.currentNoCards, newHeight );
+
+		if ( this.currentNoCards !== newHeight ) {
+
+			$("#wrapper").css( "height", ( newHeight * 100 ) + "vh" );
+			this.currentNoCards = newHeight;
+
+		}
+
 	}
+
 
 }
 

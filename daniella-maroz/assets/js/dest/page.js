@@ -179,11 +179,16 @@ var Page = {
 		setInterval( function(){
 
 			var now = moment( new Date() ), 
-				then = moment([2017, 07, 23]), 
-				diff = moment.duration( moment(then).diff( moment(now) ) );
-			var time = moment.utc( diff.as('milliseconds') ).format('HH:mm\'ss\"');
+				then = moment([2017, 07, 23]);
 
-			$("#timer").html( time.replace( ":","&#186;" ) );
+			var duration = moment.duration(now.diff(then)).as('seconds'), 
+				hours = duration / 60 / 60,
+				minutes = ( hours - Math.floor( hours ) ) * 60,
+				seconds = ( minutes - Math.floor( minutes ) ) * 60;
+
+			var durationStr = Math.floor(hours) + "&#186;" + Math.floor(minutes) +  "\'" + Math.floor(seconds) + "\"";
+
+			$("#timer").html( durationStr );
 
 		}, 1000 );
 
@@ -217,7 +222,7 @@ var Page = {
 		console.log("Page.mobileInit");
 
 		// !!! REPEATED CODE
-		$("#video").attr( "src", $("#video").attr("data-src") );
+		$("#video").attr( "src", $("#video").attr("data-src") ).css({"pointer-events":"auto"});
 		this.videoPlayer = new Vimeo.Player("video");
 
 		$("#video_wrapper").fadeIn( 1000 );

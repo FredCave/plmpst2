@@ -12,28 +12,15 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 /****************************************
 
-	FONTS
-
-****************************************/
-
-@font-face {
-  font-family: "Palimpsest";
-  font-weight: normal;
-  font-style: normal;
-  src: url("assets/fonts/Palimpsest.woff2") format("woff2"), url("assets/fonts/Palimpsest.woff") format("woff");
-}
-
-/****************************************
-
 	GENERAL
 
 ****************************************/
 
 html {
 	width: 100%;
-	height: calc( 100% + 20px );
+	height: 100%;
 	background-color: black;
-	overflow: hidden;
+	// overflow: hidden;
 }
 
 body {
@@ -43,6 +30,9 @@ body {
 #wrapper {
 	// border: 2px solid orange;
 	height: 100%;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 }
 
 audio {
@@ -89,27 +79,33 @@ audio {
 #arrows {
 	// border: 1px solid red;
 	position: fixed;
-	z-index: 9999;
-	width: calc( 100% - 48px );
-	height: 32px;
+	z-index: 9;
+	width: calc( 100% - 32px );
+	height: 56px;
 	top: 50%;
-	left: 24px;
-	transform: translateY(-20px);
+	left: 16px;
+	transform: translateY(-28px);
 	display: none;
 	.arrow {
 		// border: 1px solid green;
-		width: 32px;
-		height: auto;
+		width: 56px;
+		height: 56px;
 		position: absolute;
 		top: 0;
 		cursor: pointer;
 		a {
 			// border: 1px solid blue;
-			height: 46px;
+			height: 56px;
+			width: 56px;
     		display: inline-block;
 			img {
-				width: 100%;
+				// border: 1px solid red;
+				width: 50px;
 				height: auto;
+				padding-top: 7px;
+				@media ( max-width: 1024px ) {
+					width: 32px;
+				}
 			}			
 		}
 
@@ -117,6 +113,11 @@ audio {
 	#arrow_right {
 		right: 0;
 		transform: rotate( 180deg ) translateY( 4px );
+		img {
+			padding-top: 0px;
+    		padding-bottom: 7px;
+    		transform: translateY(-3px);
+		}
 	}
 }
 
@@ -143,7 +144,7 @@ audio {
 	color: white;
 	font-family: "Palimpsest", helvetica, arial, sans-serif;
 	line-height: 1.3;
-	font-size: 24px;
-	letter-spacing: 0.8px;
+	font-size: 28px;
+	letter-spacing: 1.2px;
 	text-shadow: 0px 0px 8px rgba( 0, 0, 0, 0.7 );	
 }

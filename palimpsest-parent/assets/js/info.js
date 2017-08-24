@@ -12,18 +12,16 @@ var Info = {
 
 		var self = this;
 
+		// SHOW INFO SCREEN AS FIRST THING ON MOBILE IN PORTRAIT
+		this.initialLoadCheck();
+
 		ArtistInfo.init();
 		MobileInfo.init();
+		this.showFullscreenButton();
 
-		// GET AJAX INFO (POST INFO, TIME,TEMP,ETC...)
-		this.getInfo();
+		MainInfo.init();
 
 		this.bindEvents();
-
-		// HIDE INITIAL INFO AFTER DELAY
-		this.timer = setTimeout( function(){
-			self.hideInfo();
-		}, 4000 );
 
 	},
 
@@ -33,60 +31,140 @@ var Info = {
 
 		var self = this;
 
-		$("#hover_area").on( "mouseover", function() {
-			self.showInfo();
-			// CLEAR TIMER
+		$(window).on( "mousemove", function() {
+			// console.log( 35, "mousemove" );
+			self.showInfoBar();
+			// CLEAR + RESET TIMER
 			clearInterval( self.timer );
+			self.timer = setTimeout( function(){
+				Info.hideInfoBar();
+			}, 4000 );
 		});
 
-		$("#hover_area").on( "mouseout", function() {
-			// START COUNTER TO HIDE
-			self.timer = setTimeout( function(){
-				self.hideInfo();
-			}, 4000 );	
-		});
+		// $("#hover_area").on( "mouseout", function() {
+		// 	// START COUNTER TO HIDE
+		// 	self.timer = setTimeout( function(){
+		// 		Info.hideInfoBar();
+		// 	}, 4000 );	
+		// });
 
 		$("#main_info_show").on( "click", function(e) {
 			e.preventDefault();
-			self.showMainInfo();
+			if ( Info.detectMobile() ) {
+				// IF LANDSCAPE
+				console.log( 53, window.orientation );
+				if ( window.orientation === 90 || window.orientation === -90 ) {
+					MainInfo.preInfoScreen();					
+				} else {
+					MainInfo.showMobileInfo();
+				}
+			} else {
+				MainInfo.showMainInfo();				
+			}
 		});
 
 		$("#main_info_hide").on( "click", function(e) {
 			e.preventDefault();
-			self.hideMainInfo();
+			MainInfo.hideMainInfo();
 		});
 
-		$("#info .info_toggle").on("click", function(){
-			self.infoSectionToggle();
+		$("#fullscreen a").on("click", function(e){
+			e.preventDefault();
+			console.log( 64, "Fullscreen click." );
+			self.toggleFullScreen();
 		});
 
-		// $("#fullscreen").on("click", function(){
-		// 	console.log( 64, "Fullscreen click." );
-		// 	self.toggleFullScreen();
-		// });
+		$(window).on("orientationchange", function(event) { 
+			if ( self.detectMobile() ) {
+				self.orientationManager( event.orientation );
+			}
+		});
+
+		$(window).on("resize", function(){
+			ArtistInfo.artistInfoHeightCheck();
+		});
+
+		$("#browser_error_message .close a").on("click", function(e){
+			e.preventDefault();
+			$("#browser_error_message").hide();
+		});
 
 	},
 
-	hideInfo: function () {
+	initialLoadCheck : function () {
 
-		console.log("Info.hideInfo");
+		console.log("Info.initialLoadCheck");
 
-		console.log( 114, this.infoVisible );
+		var self = this;
 
-		if ( this.infoVisible ) {
-			return;
+		function detectIE() {
+  			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf('MSIE ');
+			if (msie > 0) {
+				// IE 10 OR OLDER => RETURN VERSION NUMBER
+				return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+			}
+			var trident = ua.indexOf('Trident/');
+			if (trident > 0) {
+				// IE 11 => RETURN VERSION NUMBER
+				var rv = ua.indexOf('rv:');
+				return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+			}
+			// ELSE
+			return false;
 		}
 
-		var infoH = $("#info_wrapper").height();
+		if ( Info.detectMobile() ) {
+			
+			console.log( 119, window.orientation, $(window).width(), $(window).height() );
+
+			if ( window.orientation === 0 || window.orientation === 180 || $(window).width() < $(window).height() ) {
+				// IF PORTRAIT
+				$("#mobile_background").show();
+				MainInfo.showMobileInfo();
+			} else {
+				$("#info_wrapper").fadeIn(500);
+				this.showInfoBar();
+			}
+
+		} else {
+
+			// IF OPERA OR IF EXPLORER
+			if ( navigator.userAgent.indexOf("Opera") > -1 || detectIE() ) {
+				console.log( 120, navigator.userAgent );
+				console.log("Browser message.");
+			} else {
+				console.log('Compatible browser.');
+			}
+
+			$("#info_wrapper").fadeIn(500);
+
+		}
+
+	},
+
+	hideInfoBar: function ( calledFromOrientation ) {
+
+		// console.log("Info.hideInfoBar");
+
+		if ( calledFromOrientation ) {
+			// CONTINUE 
+		} else {
+			if ( this.infoVisible || this.detectMobile() ) {
+				return;
+			}	
+		}
+
+		var infoH = Math.max( $("#info_left").height(), $("#info_wrapper").height() );
 		$("#info_wrapper").css({
 			"top" : 0 - infoH - 24
 		});
 
 	},
 
-	showInfo: function () {
+	showInfoBar: function () {
 
-		console.log("Info.showInfo");
+		// console.log("Info.showInfoBar");
 
 		$("#info_wrapper").css({
 			"top" : ""
@@ -94,207 +172,11 @@ var Info = {
 
 	},
 
-	showMainInfo: function () {
-
-		console.log("Info.showMainInfo");
-
-		this.infoVisible = true;
-
-		// HIDE TITLE + SHOW X
-		$("#main_info_show").add("#info_left").fadeOut( 1000 );
-		$("#main_info_hide").fadeIn( 1000 );
-
-		$("#info").stop().fadeIn( 4000 );
-
-		$("#wrapper").css({"pointer-events":"none"});
-
-	},
-
-	hideMainInfo: function () {
-
-		console.log("Info.hideMainInfo");
-
-		this.infoVisible = false;
-
-		// SHOW TITLE + HIDE X
-		$("#main_info_show").add("#info_left").fadeIn( 1000 );
-		$("#main_info_hide").fadeOut( 1000 );
-
-		$("#info").stop().fadeOut( 2000 );
-
-		$("#wrapper").css({"pointer-events":""});
-
-
-	},
-
-	getInfo: function () {
-
-		console.log("Info.getInfo");
-
-		var self = this;
-
-		// GET POST INFO
-		$.ajax({
-		    url: MAIN_ROOT + "wp-json/wp/v2/posts/44",
-		    success: function(data) {
-		    	ArtistInfo.artistInfoPrep(data.acf.works);
-		    	self.mainInfoLoadWorks(data.acf.works);
-		    },
-		    error: function(errorThrown){
-		        console.log(errorThrown);
-		    }
-		}); 
-
-		// GET MAIN TEXT
-		$.ajax({
-		    url: MAIN_ROOT + "wp-json/wp/v2/posts/42",
-		    success: function(data) {
-		    	self.mainInfoPrep(data.acf);
-		    },
-		    error: function(errorThrown){
-		        console.log(errorThrown);
-		    }
-		}); 
-
-		// START CURRENT TIME IN JERUSALEM
-		this.metaTimeInit();
-
-		var lat = 31.7683,
-			lng = 35.2137,
-			cityId = 281184,
-			key = "d1e177c805b94194de56eac601d8e565";
-
-		// GET TEMP + SUNTIMES
-		$.ajax({
-			url: "http://api.openweathermap.org/data/2.5/weather?id=" + cityId + "&APPID=" + key + "&units=metric",
-			dataType: "json", 
-			success: function (data) {
-				self.metaTempInit( data.main );
-				self.metaSunInit( data.sys );
-			},
-			error: function ( response ) {
-				console.log( "Ajax error: " + response.responseJSON.message );
-			}
-		});
-
-		// FALLBACK: GET SUNTIMES
-		// $.ajax({
-		// 	url: "http://api.sunrise-sunset.org/json?lat="+lat+"&lng="+lng+"&formatted=0",
-		// 	dataType: "json", 
-		// 	success: function (data) {
-		// 		self.metaSunInit( data.results );
-		// 	}
-		// });
-
-		var moontimes = SunCalc.getMoonTimes( new Date(), lat, lng );
-		this.metaMoonInit( moontimes );
-
-	}, 
-
-	metaTimeInit: function ( offset ) {
-
-		console.log("Info.metaTimeInit");
-
-		var now = moment().tz("Asia/Jerusalem");
-		console.log( 175, now ); 
-		var nowDate = now.format("DD MMMM YYYY");
-		$("#info .meta_date").text( nowDate ).addClass("loaded");
-		$("#info .meta_time").text( now.format("HH:mm:ss") ).addClass("loaded");
-		// START CLOCK 
-		this.clockInterval = setInterval( function(){
-			$("#info .meta_time").text( moment().tz("Asia/Jerusalem").format("HH:mm:ss") );
-		}, 1000 );
-
-	},
-
-	metaTempInit: function ( data ) {
-
-		console.log("Info.metaTempInit");
-
-		var temp = data.temp;
-		if ( temp !== undefined ) {
-			$("#info .meta_temp").html( data.temp + "&deg;C, " ).addClass("loaded");
-		}
-
-	},
-
-	metaSunInit: function ( data ) {
-
-		console.log("Info.metaSunInit");
-
-		var sunrise = moment( data.sunrise, "X" ).tz("Asia/Jerusalem").format("HH:mm");
-		var sunset = moment( data.sunset, "X" ).tz("Asia/Jerusalem").format("HH:mm");
-		if ( sunrise !== undefined  ) {
-			$("#info .meta_sunrise").append( sunrise + ", " ).addClass("loaded");
-		}
-		if ( sunset !== undefined  ) {
-			$("#info .meta_sunset").append( sunset + ", " ).addClass("loaded");
-		}
-
-	}, 
-
-	metaMoonInit: function ( data ) {
-
-		console.log("Info.metaMoonInit");
-
-		var moonrise = moment( data.rise ).format("HH:mm");
-		var moonset = moment( data.set ).format("HH:mm");
-		if ( moonrise !== undefined  ) {
-			$("#info .meta_moonrise").append( moonrise + ", " ).addClass("loaded");
-		}
-		if ( moonset !== undefined  ) {
-			$("#info .meta_moonset").append( moonset + "" ).addClass("loaded");
-		}
-
-	}, 
-
-	mainInfoPrep: function ( data ) {
-
-		console.log("Info.mainInfoPrep");
-
-		console.log( 302, data );
-
-		$("#info_definition").html( data.definition );
-		$("#info_main_text").html( data.main_text );
-		$("#info_colophon").html( data.colophon );
-		$("#info_mekudeshet_text").html( data.mekudeshet_text );
-		$("#info_mekudeshet_share").html( data.mekudeshet_links );
-
-		$("#info").appendTo( $("#wrapper") );
-
-	}, 
-
-	mainInfoLoadWorks: function ( data ) {
-
-		console.log("Info.mainInfoLoadWorks");	
-
-		var works = "<ul>";
-		// LOOP THROUGH ARRAY
-		_.each( data, function(work) {
-			works += "<li>";
-			works += "<a href='" + work.work_url + "'>";
-			works += work.work_title;
-			works += "</a><br>";
-			works += work.work_artist;
-			works += "</li>";
-		});
-		works += "</ul>";
-
-		$("#info_works").html( works );
-
-	},
-
-	infoSectionToggle: function () {
-
-		console.log("Info.infoSectionToggle");
-
-	},
-
 	detectMobile: function () {
 
 		console.log("Info.detectMobile");
 
-		if ( Modernizr.touchevents || $(window).width() < 768 ) {
+		if ( Modernizr.touchevents && $(window).width() <= 1024 ) {
 			return true;
 		} else {
 			return false;
@@ -302,11 +184,80 @@ var Info = {
 
 	},
 
+	chromeDetect: function () {
+
+		var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+		console.log( 118, "iOS test: ", iOS );
+
+			// CHROME DETECT
+		function isChrome() {
+			var isChromium = window.chrome,
+			winNav = window.navigator,
+			vendorName = winNav.vendor,
+			isOpera = winNav.userAgent.indexOf("OPR") > -1,
+			isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+			isIOSChrome = winNav.userAgent.match("CriOS");
+
+			if (isIOSChrome) {
+				return true;
+			} else if ( isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) {
+				return true;
+			} else { 
+				return false;
+			}
+		}
+
+		if ( isChrome() && !iOS ) {
+			return true;
+		} else {
+			return false;
+		}
+
+	},
+
+	mobileHeightCheck: function ( portrait ) {
+
+		console.log("Info.mobileHeightCheck", portrait);
+
+		var height = $(window).height() + 60;
+		if ( portrait ) {
+			height = "";
+		}
+		// console.log( 218, height );
+		$("body").css( "height", height );
+
+	},
+
+	showFullscreenButton: function () {
+
+		console.log("Info.showFullscreenButton");
+
+		if ( this.detectMobile() ) {
+			
+			this.mobileHeightCheck();
+			
+			// IF ON CHROME BUT NOT ON iOS
+			if ( this.chromeDetect() ) {
+				$("#fullscreen").show().css("display","inline-block");
+			} else {
+				$("#fullscreen").hide();
+			}
+		} else {
+			$("#fullscreen").hide();
+			$("body").css( "height", "");
+		}
+
+	}, 
+
 	toggleFullScreen: function () {
 
 		console.log("Info.toggleFullScreen");
 		
 		if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+			// TOGGLE IMAGE
+			$(".enter_fullscreen").hide();
+			$(".exit_fullscreen").show();
 			if (document.documentElement.requestFullScreen) {  
 				document.documentElement.requestFullScreen();  
 			} else if (document.documentElement.mozRequestFullScreen) {  
@@ -315,6 +266,9 @@ var Info = {
 				document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
 			}  
 		} else {  
+			// TOGGLE IMAGE
+			$(".exit_fullscreen").hide();
+			$(".enter_fullscreen").show();
 			if (document.cancelFullScreen) {  
 				document.cancelFullScreen();  
 			} else if (document.mozCancelFullScreen) {  
@@ -325,6 +279,26 @@ var Info = {
 		}  
 
 	}, 
+
+	orientationManager: function ( orientation ) {
+
+		console.log("Info.orientationManager");
+
+		console.log( 182, "Orientation is " + orientation );
+
+		if ( orientation === "landscape" || $(window).width() > $(window).height() ) {
+			// IF INFO_WRAPPER NOT SHOWN YET
+			$("#info_wrapper").fadeIn(500);
+			// SHOW WORK
+			this.mobileHeightCheck();
+			MainInfo.hideMobileInfo();
+		} else if ( orientation === "portrait" ) {
+			// SHOW MAIN INFO
+			this.mobileHeightCheck( true ); // RESETS HEIGHT
+			MainInfo.showMobileInfo();
+		} 
+
+	},
 
 }
 

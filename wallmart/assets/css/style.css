@@ -67,27 +67,25 @@ html, body {
   top: 0;
   width: 100%;
   height: auto;
+  height: 900vh;
+  overflow: hidden;
 }
 
-/* line 33, style.scss */
-#wrapper img {
-  width: auto;
-  min-height: 100%;
-}
-
-/* line 38, style.scss */
+/* line 40, style.scss */
 #postcards {
   width: 100%;
   height: auto;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
 }
-/* line 43, style.scss */
+/* line 46, style.scss */
 #postcards li {
   position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
 }
-/* line 49, style.scss */
+/* line 52, style.scss */
 #postcards li .postcard_image {
   width: 112%;
   height: 112%;
@@ -99,9 +97,31 @@ html, body {
   background-position: center;
 }
 
-/* line 62, style.scss */
-#objects_wrapper {
-  border: 2px solid red;
+/* line 121, style.scss */
+#title_wrapper {
+  top: 160px;
+  width: 100%;
+  height: calc( 100vh - 380px );
+  position: absolute;
+}
+/* line 128, style.scss */
+#title_wrapper .title {
+  height: 100%;
+  width: 80%;
+  max-width: 1024px;
+  margin: 0 auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.9;
+}
+
+/* line 145, style.scss */
+#wallmart_content {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
   position: absolute;
   top: 100vh;
   left: 60px;
@@ -116,72 +136,81 @@ html, body {
       justify-content: space-around;
 }
 @media (max-width: 1024px) {
-  /* line 62, style.scss */
-  #objects_wrapper {
+  /* line 145, style.scss */
+  #wallmart_content {
     display: block;
   }
 }
-/* line 75, style.scss */
-#objects_wrapper .list-item {
-  border: 1px solid green;
-  display: inline-block;
-  width: 49.5%;
-  height: 85vh;
+@media (max-width: 768px) {
+  /* line 145, style.scss */
+  #wallmart_content {
+    width: calc( 100% - 32px );
+    left: 16px;
+  }
+}
+/* line 165, style.scss */
+#wallmart_content .list-item {
+  width: 50%;
+  height: 50vw;
   position: relative;
-  margin-bottom: 200px;
 }
-/* line 86, style.scss */
-#objects_wrapper .list-item canvas {
+@media (max-width: 1024px) {
+  /* line 165, style.scss */
+  #wallmart_content .list-item {
+    width: 100%;
+    height: 100vh;
+  }
+}
+/* line 175, style.scss */
+#wallmart_content .list-item .scene {
   width: 100%;
-  height: 100%;
+  height: 50vw;
 }
-/* line 91, style.scss */
-#objects_wrapper .list-item .scene {
-  width: 100%;
-  height: 100%;
-}
-/* line 95, style.scss */
-#objects_wrapper .list-item .caption {
+/* line 180, style.scss */
+#wallmart_content .list-item .caption {
   position: absolute;
   top: calc( 100% - 130px );
   width: 100%;
   height: 130px;
   display: none;
   pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
 }
-/* line 103, style.scss */
-#objects_wrapper .list-item .caption img {
-  height: 130px;
-  width: auto;
-  margin: 24px 0px 0px -18px;
+@media (max-width: 768px) {
+  /* line 180, style.scss */
+  #wallmart_content .list-item .caption {
+    -webkit-transform: translateY(-130px);
+            transform: translateY(-130px);
+  }
+}
+/* line 193, style.scss */
+#wallmart_content .list-item .caption img {
+  width: 490px;
+  height: auto;
+  margin-left: -20px;
+}
+@media (max-width: 500px) {
+  /* line 193, style.scss */
+  #wallmart_content .list-item .caption img {
+    width: 100%;
+  }
+}
+/* line 208, style.scss */
+#wallmart_content .list-item:nth-child(11),
+#wallmart_content .list-item:nth-child(12) {
+  margin-bottom: 0px;
 }
 
-/* line 113, style.scss */
-#canvas {
-  border: 2px solid orange;
-  position: absolute;
-  top: 0;
-  left: 60px;
-  width: calc( 100% - 0px );
-  height: calc( 525vh + 1400px );
-  opacity: 0.9;
-}
-
-/* line 127, style.scss */
-#title_wrapper {
-  top: 160px;
+/* line 214, style.scss */
+#wallmart_canvas {
+  position: fixed;
+  z-index: 99;
+  left: 0px;
   width: 100%;
-  height: calc( 100vh - 380px );
-  position: absolute;
-}
-/* line 134, style.scss */
-#title_wrapper .title {
   height: 100%;
-  width: 80%;
-  max-width: 1024px;
-  margin: 0 auto;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  pointer-events: none;
   opacity: 0.9;
 }

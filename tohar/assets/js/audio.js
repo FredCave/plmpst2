@@ -7,6 +7,11 @@ var Audio = {
         // NO MOBILE ON AUDIO
         if ( !Info.detectMobile() ) {
 
+            // IF IN BACKGROUND
+            if ( $("#wrapper").attr("data-bg") == "true" ) {
+                return;
+            } 
+
             this.startMainLoop();
 
             this.startVoiceover();            

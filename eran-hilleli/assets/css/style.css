@@ -51,42 +51,33 @@ table {
 
 /****************************************
 
-	FONTS
-
-****************************************/
-@font-face {
-  font-family: "Palimpsest";
-  font-weight: normal;
-  font-style: normal;
-  src: url("assets/fonts/Palimpsest.woff2") format("woff2"), url("assets/fonts/Palimpsest.woff") format("woff");
-}
-/****************************************
-
 	GENERAL
 
 ****************************************/
-/* line 32, style.scss */
+/* line 19, style.scss */
 html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: fixed;
 }
 
-/* line 39, style.scss */
+/* line 27, style.scss */
 #wrapper {
   position: fixed;
-  top: 0;
+  bottom: 0;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 }
 
-/* line 46, style.scss */
+/* line 35, style.scss */
 #wrapper ul {
   width: 100%;
   height: 100%;
 }
-/* line 49, style.scss */
-#wrapper ul li {
+/* line 38, style.scss */
+#wrapper ul .scroll_image {
   position: absolute;
   top: 0;
   left: 0;
@@ -97,12 +88,12 @@ html, body {
   background-position: 50% 50%;
   opacity: 0;
 }
-/* line 60, style.scss */
+/* line 49, style.scss */
 #wrapper ul .visible {
   opacity: 1;
 }
 
-/* line 65, style.scss */
+/* line 54, style.scss */
 #scroll_to_start {
   font-family: "Palimpsest", helvetica, arial, sans-serif;
   font-size: 24px;

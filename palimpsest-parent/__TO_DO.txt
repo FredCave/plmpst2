@@ -1,0 +1,28 @@
+
+
+stephen – opening artist info when video playing, back butoon is above share 
+
+dor – random layers on scene two not fading out
+
+
+
+
+
+
+
+BACKGROUND VIDEOS
+
+CHECK SOUND IN BACKGROUND MODE ON ALL
+
+the work in the background is scrolling together with the caption text now...
+DISABLE ALL WRAPPER EVENTS????
+
+Add X on the top left corner of the blue notification "Webcam access is not supported on your browser.
+Please try Chrome or Firefox." (smae x as in the camera)
+
+wallmart
+
+REVERSE DOR'S ON MOBILE
+	DOR'S CRASHES ON ARTIST INFO CLICK – MOBILE
+		PAUSE THREE.JS ANIMATIONS DURING INFO???
+

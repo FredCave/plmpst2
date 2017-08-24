@@ -6,9 +6,11 @@ var Objects = {
 
 		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-		var canvas;
+		var self = this;
 
-		var scenes = [], renderer;
+		var canvas, 
+			scenes = [], 
+			renderer;
 
 		init();
 		animate();
@@ -30,9 +32,9 @@ var Objects = {
 				element.className = "list-item";
 				element.innerHTML = "<div class='scene'></div>";
 
-				// Look up the element that represents the area
-				// we want to render the scene
+				// FIND WRAPPER FOR SCENE
 				scene.userData.element = element.querySelector( ".scene" );
+				// APPEND CREATED ELEMENT
 				content.appendChild( element );
 
 				var camera = new THREE.PerspectiveCamera( 50, 1, 1, 10 );
@@ -63,7 +65,15 @@ var Objects = {
 				
 				mesh.position.set( 0, 0, 0 );
 				mesh.rotation.set( - Math.PI / 2, - Math.PI / 12, 0 );
-				mesh.scale.set( 0.05, 0.05, 0.05 );
+				
+				var scale = 0.045;
+				if ( filename === "palestinian_village" ) {
+					scale *= 0.825;
+				} else if ( filename === "checkpoint" || filename === "menorah" ) {
+					scale *= 1.2;
+				}
+
+				mesh.scale.set( scale, scale, scale );
 
 				scene.add( mesh );
 
@@ -73,32 +83,43 @@ var Objects = {
 				light.position.set( 1, 1, 1 );
 				scene.add( light );
 
-  				var axis = new THREE.AxisHelper(20);
-  				scene.add(axis);
+  				// var axis = new THREE.AxisHelper(20);
+  				// scene.add(axis);
 
   				scene.name = filename;
 
   				// TMP
-  				var lineGeometry = new THREE.Geometry();
-			    lineGeometry.vertices.push(new THREE.Vector3(-10, -10, 0),
-			    new THREE.Vector3(10, -10, 0),
-			    new THREE.Vector3(10, 10, 0),
-			    new THREE.Vector3(-10, 10, 0),
-			    new THREE.Vector3(-10, -10, 0));
-			    var line = new THREE.Line(lineGeometry,
-			    	new THREE.LineBasicMaterial({
-			        	color: 0xffff00
-			    	}));
-			    scene.add(line);
+  				// var lineGeometry = new THREE.Geometry();
+			   //  lineGeometry.vertices.push(new THREE.Vector3(-10, -10, 0),
+			   //  new THREE.Vector3(10, -10, 0),
+			   //  new THREE.Vector3(10, 10, 0),
+			   //  new THREE.Vector3(-10, 10, 0),
+			   //  new THREE.Vector3(-10, -10, 0));
+			   //  var line = new THREE.Line(lineGeometry,
+			   //  	new THREE.LineBasicMaterial({
+			   //      	color: 0xffff00
+			   //  	}));
+			   //  scene.add(line);
 
+			    // PUSH TO ARRAY OF SCENES
 				scenes.push( scene );
+
+				// FADE IN CANVAS
+				$("#canvas").fadeIn(1000);
 
 			});
 
 			renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true, alpha: true } );
 			renderer.setClearColor( 0xffffff, 0 );
 			// renderer.setClearColor( 0x000000, 0 );
-			renderer.setPixelRatio( window.devicePixelRatio );
+			
+			// CHROME / 1.244
+			// SAFARI / 2
+
+			console.log( 119, "Pixel ratio: ", window.devicePixelRatio );
+			renderer.setPixelRatio( window.devicePixelRatio / 1.244  ); //  / 1.244 
+
+			self.canvasSize();
 
 		}
 
@@ -107,15 +128,17 @@ var Objects = {
 			var width = canvas.clientWidth;
 			var height = canvas.clientHeight;
 
-			// console.log( 97, width, height,  );
-				width = $("#objects_wrapper").width() + 60;
-				height = $("#objects_wrapper").outerHeight() - 200;
+			// console.log( 97, width, height );
+
+			width = $("#objects_wrapper").width();
+			// height = $("#objects_wrapper").outerHeight();
+
+			// console.log( 131, width, height );
 
 			// console.log( 101, canvas.clientHeight, height );
-
 			$("#canvas").css({
-				// "width" : width,
-				"height" : height
+				"width" : width,
+				"height" : height 
 			});
 
 			if ( canvas.width !== width || canvas.height != height ) {
@@ -126,15 +149,14 @@ var Objects = {
 
 		function animate() {
 
-	        // REDUCE FRAME RATE TO 24 FPS
+	        // REDUCE FRAME RATE TO 15 FPS
 	        setTimeout( function() {
 	            requestAnimationFrame( function(){
 	                animate();
 	            });
-	        }, 1000 / 1 );
+	        }, 1000 / 2 ); // 15 IS A GOOD VALUE
 
 			// requestAnimationFrame( animate );
-
 			render();
 
 		}
@@ -171,11 +193,13 @@ var Objects = {
 				var calcTop = rect.top + window.scrollY,
 					calcBottom = rect.bottom + window.scrollY;
 
+				// console.log( 195, rect.top, calcTop);
+
 				// CHECK IF OFFSCREEN : IF SO SKIP IT
 				if ( calcBottom < 0 || calcTop > renderer.domElement.clientHeight ||
 					 rect.right  < 0 || rect.left > renderer.domElement.clientWidth ) {
 					// console.log( scene.name, " offscreen" );
-					return;
+					// return;
 				}
 
 				// CALC THE VIEWPORT
@@ -186,18 +210,20 @@ var Objects = {
 				// var top    = rect.top;
 				var top    = calcTop;
 
-				if ( scene.name === "gate" ) {
-					// console.log( 162, top, height );
+				if ( scene.name === "pillbox" ) {
+					console.log( 213, top, height );
 				}
 
 				// SET VIEWPORT FOR EACH SCENE
-				renderer.setViewport( left, top, width, height );
+				renderer.setViewport( left, top, width, height ); // ADDING TO TOP CREATES A TOP MARGIN ABOVE MODEL
+				renderer.setClearColor( 0xffff00, 1 ); // BACKGROUND COLOUR FOR DEBUGGING
 				renderer.setScissor( left, top, width, height );
+				renderer.clearColor(); 
 
 				var camera = scene.userData.camera;
 
-				//camera.aspect = width / height; // not changing in this example
-				//camera.updateProjectionMatrix();
+				camera.aspect = width / height; // not changing in this example
+				camera.updateProjectionMatrix();
 
 				scene.userData.controls.update();
 

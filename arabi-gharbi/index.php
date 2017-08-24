@@ -82,6 +82,19 @@
 		<!-- #INFO APPENDED AT END OF #WRAPPER FROM __INFO.PHP -->
 	</div>
 
+	<div id="work_nav">
+					
+		<div class="button_right">
+			<div id="fullscreen">
+				<a href="">
+					<img class="enter_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen.svg" />
+					<img class="exit_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen_exit.svg" />
+				</a>
+			</div>
+		</div>	
+
+	</div>
+
 	<div id="comment_wrapper">
 		<?php 
 		// ATTEMPT AT POSTING WEBCAM IMAGES THROUGH COMMENT FORM
@@ -92,8 +105,8 @@
 	<?php 
 	// IF NOT BACKGROUND
 	if ( !$bg_var ) {
-		$title = "Arabi Gharbi";
-		$artist = "Ohad Hadad and Hilal Jabareen";
+		$title = "Arabi-Arabi";
+		$artist = "Ohad Hadad, Hilal Jabareen";
 		include_once( get_template_directory() . '/includes/artist_info.php' );
 		include_once( get_template_directory() . '/includes/main_info.php' );
 	}

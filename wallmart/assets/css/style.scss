@@ -28,18 +28,21 @@ html, body {
 	top: 0;
 	width: 100%;
 	height: auto;
+	height: 900vh;
+	overflow: hidden;
 }
 
-#wrapper img {
-	width: auto;
-	min-height: 100%;
-}
+// #wrapper img {
+// 	width: auto;
+// 	min-height: 100%;
+// }
 
 #postcards {
 	// border: 1px solid orange;
 	width: 100%;
 	height: auto;
 	// opacity: 0;
+	transform: translateZ(0);
 	li {
 		// border: 1px solid purple;
 		position: relative;
@@ -59,70 +62,61 @@ html, body {
 	}
 }
 
-#objects_wrapper {
-	border: 2px solid red;
-	position: absolute;
-	top: 100vh;
-	left: 60px;
-	min-height: 100vh;
-	width: calc( 100% - 120px );
-	display: flex;	
-	@media ( max-width: 1024px ) {
-		display: block;
-	}
-	flex-wrap: wrap;
-	justify-content: space-around;	
-	.list-item {
-		border: 1px solid green;
-		display: inline-block;
-		width: 49.5%;
-		height: 85vh;
-		position: relative;
-		margin-bottom: 200px;
-		@media ( max-width: 1024px ) {
-			// width: 100%;
-			// height: 50vh;
-		}
-		canvas {
-			// border: 1px solid red;
-			width: 100%;
-			height: 100%;
-		}
-		.scene {
-			width: 100%;
-			height: 100%;
-		}
-		.caption {
-			// border: 1px solid red;
-			position: absolute;
-			top: calc( 100% - 130px );
-			width: 100%;
-			height: 130px;
-			display: none;
-			pointer-events: none;
-			img {
-				// border: 1px solid purple;
-				height: 130px;
-				width: auto;
-				margin: 24px 0px 0px -18px;
-			}
-		}
-	}	
-}
+// #objects_wrapper {
+// 	// border: 2px solid red;
+// 	position: absolute;
+// 	top: 100vh;
+// 	left: 60px;
+// 	min-height: 100vh;
+// 	width: calc( 100% - 120px );
+// 	display: flex;	
+// 	@media ( max-width: 1024px ) {
+// 		display: block;
+// 	}	
+// 	@media ( max-width: 768px ) {
+// 		width: calc( 100% - 32px );
+// 		left: 16px;
+// 	}
+// 	flex-wrap: wrap;
+// 	justify-content: space-around;	
+// 	.list-item {
+// 		border: 1px solid green;
+// 		display: inline-block;
+// 		width: 49.5%;
+// 		height: 85vh;
+// 		position: relative;
+// 		// margin-bottom: 200px;
+// 		@media ( max-width: 1024px ) {
+// 			width: 100%;
+// 			height: 75vh;
+// 		}
+// 		canvas {
+// 			// border: 1px solid red;
+// 			// width: 100%;
+// 			// height: 100%;
+// 		}
+// 		.scene {
+// 			width: 100%;
+// 			height: 100%;
+// 		}
 
-#canvas {
-	// display: none;
-	border: 2px solid orange;
-	// position: fixed;
-	position: absolute;
-	top: 0;
-	// top: 100vh;
-	left: 60px;
-	width: calc( 100% - 0px );
-	// height: 100%;
-	height: calc( 525vh + 1400px );
-	opacity: 0.9;
-}
+// 	}	
+// }
+
+// #canvas {
+
+// 	// border: 2px solid orange;
+// 	// position: fixed;
+// 	position: absolute;
+// 	top: 0;
+// 	// top: 100vh;
+// 	left: 60px;
+// 	width: calc( 100% - 0px );
+// 	// height: 100%;
+// 	height: calc( 525vh + 1400px );
+// 	opacity: 0.9;
+// 	display: none;
+// }
 
 #title_wrapper {
 	// border: 1px solid orange;
@@ -139,8 +133,90 @@ html, body {
 		background-repeat: no-repeat;
 		background-size: contain;
 		background-position: center;
-		// filter: drop-shadow( 0px 16px 18px rgba( 0, 0, 0, 0.6 ) );
 		opacity: 0.9;
 	}
 }
 
+// * {
+// 	box-sizing: border-box;
+// 	-moz-box-sizing: border-box;
+// }
+
+#wallmart_content {
+	// border: 1px solid green;
+	position: absolute;
+	top: 0px; width: 100%;
+	z-index: 1;
+	position: absolute;
+	top: 100vh;
+	left: 60px;
+	min-height: 100vh;
+	width: calc( 100% - 120px );
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	@media ( max-width: 1024px ) {
+		display: block;
+	}	
+	@media ( max-width: 768px ) {
+		width: calc( 100% - 32px );
+		left: 16px;
+	}
+	.list-item {
+		width: 50%;
+		height: 50vw;
+		// margin-bottom: 200px;
+		position: relative;
+		@media ( max-width: 1024px ) {
+			width: 100%;
+			height: 100vh;
+			// margin-bottom: 44px;
+		}
+		.scene {
+			// border: 1px solid blue;
+			width: 100%;
+			height: 50vw;
+		}
+		.caption {
+			// border: 1px solid red;
+			position: absolute;
+			top: calc( 100% - 130px );
+			width: 100%;
+			height: 130px;
+			display: none;
+			pointer-events: none;
+			-webkit-user-select: none;      
+			user-select: none;
+			@media ( max-width: 768px ) {
+				transform: translateY( -130px );
+			}
+			img {
+				// border: 1px solid purple;
+				// height: 130px;
+				// width: auto;
+				// margin: 24px 0px 0px -18px;
+				width: 490px;
+				height: auto;
+				margin-left: -20px;
+				@media ( max-width: 500px ) {
+					width: 100%;
+				}
+			}
+
+		}
+	}
+	.list-item:nth-child(11),
+	.list-item:nth-child(12) {
+		margin-bottom: 0px;
+	}
+}
+
+#wallmart_canvas {
+	position: fixed;
+	z-index: 99;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	opacity: 0.9;
+}

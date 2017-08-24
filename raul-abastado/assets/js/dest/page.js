@@ -37,7 +37,7 @@ var Page = {
 
 			e.preventDefault();
 			var lang = $(this).attr("data-lang");
-			if ( Info.detectMobile ) {
+			if ( Info.detectMobile() ) {
 				self.mobileLangNav(lang);
 			} else {
 				self.restartVideo(lang);				
@@ -69,7 +69,9 @@ var Page = {
 				var thisSrc = $(this).attr("data-src"),
 					newSrc = thisSrc.replace( "?background=1", "?autoplay=0" );
 				console.log( 67, newSrc );
-				$(this).attr("data-src", newSrc);
+				$(this).attr("data-src", newSrc).css({
+					"pointer-events" : "auto"
+				});
 			});
 
 			this.mobileInit();
@@ -128,7 +130,7 @@ var Page = {
 	        	if ( !self.videoVisible ) {
 	        		$("#video_wrapper").fadeIn( 1000 );
 	        	}
-	            // console.log( 93, "Time update", data.percent );
+	            console.log( 93, "Time update HE", data.percent );
 	            // if ( data.percent >= 0.99 ) {
 	            // 	console.log( 92, "Video ended." );
 	            // }
@@ -151,7 +153,7 @@ var Page = {
                 video = $(this),
                 vidR = parseInt( video.attr("height") ) / parseInt( video.attr("width") ); // VIDEO RATIO
 
-            console.log( 104, winR, video.attr("height"), video.attr("width") );
+            // console.log( 104, winR, video.attr("height"), video.attr("width") );
 
             if ( winR > vidR ) {
                 
@@ -194,11 +196,16 @@ var Page = {
 		setInterval( function(){
 
 			var now = moment( new Date() ), 
-				then = moment([2017, 07, 23]), 
-				diff = moment.duration( moment(then).diff( moment(now) ) );
-			var time = moment.utc( diff.as('milliseconds') ).format('HH:mm\'ss\"');
+				then = moment([2017, 07, 23]);
 
-			$("#timer").html( time.replace( ":","&#186;" ) );
+			var duration = moment.duration(now.diff(then)).as('seconds'), 
+				hours = duration / 60 / 60,
+				minutes = ( hours - Math.floor( hours ) ) * 60,
+				seconds = ( minutes - Math.floor( minutes ) ) * 60;
+
+			var durationStr = Math.floor(hours) + "&#186;" + Math.floor(minutes) +  "\'" + Math.floor(seconds) + "\"";
+
+			$("#timer").html( durationStr );
 
 		}, 1000 );
 
@@ -222,46 +229,53 @@ var Page = {
 			$("#video_en").attr("src", $("#video_en").attr("data-src") );
 			this.videoPlayerEn = new Vimeo.Player("video_en");
 			this.enPlayer = true;
-			this.videoPlayerEn.play();
-			this.videoPlayerEn.pause();
+			// this.videoPlayerEn.play();
+			// this.videoPlayerEn.pause();
+
+	        this.videoPlayerEn.on( "timeupdate", _.throttle( function(data){
+	            
+	            console.log( 230, "Time update EN", data.percent );
+
+	        }, 1000 ));
+
 		} 
 
 		if ( lang === "en" ) {
 
+			this.videoPlayerHe.pause();
+
 			console.log( 203, "Play en" );
 			$("#video_he").hide();
 			// PLAY EN
-			this.videoPlayerEn.play().then(function() {
-				_.delay( function(){
-					console.log( 212 );
-					$("#video_en").show();
-					$("#video_wrapper").fadeIn();				
-				}, 500 );
+			this.videoPlayerEn.setCurrentTime(0);
+			
+			this.videoPlayerEn.play();
+			_.delay( function(){
+				$("#video_en").show();
+				$("#video_wrapper").fadeIn();				
+			}, 500 );
 				// RESET SIBLING TIME
-				self.videoPlayerHe.setCurrentTime(0);
-			}).catch(function(error) {
-				console.log( 229, error );
-			});
+			this.videoPlayerHe.setCurrentTime(0);
 
 			// HIGHLIGHT BUTTON
 			$("#lang_en").addClass("selected").siblings().removeClass("selected");
 
 		} else if ( lang === "he" ) {
 			
+			if ( this.videoPlayerEn !== undefined ) {
+				this.videoPlayerEn.pause();
+			}
+
 			console.log( 203, "Play he");
 			$("#video_en").hide();
 
 			// PLAY HE
-			this.videoPlayerHe.setCurrentTime(0).then( function(seconds) {
-				self.videoPlayerHe.play();
-				console.log( 178, "Video started at " + seconds + " seconds" );
-				_.delay( function(){
-					$("#video_he").show();
-					$("#video_wrapper").fadeIn();				
-				}, 500 );
-			}).catch(function(error) {
-				console.log( 247, error );
-			});
+			this.videoPlayerHe.setCurrentTime(0);
+			this.videoPlayerHe.play();
+			_.delay( function(){
+				$("#video_he").show();
+				$("#video_wrapper").fadeIn();				
+			}, 500 );
 
 			// HIGHLIGHT BUTTON
 			$("#lang_he").addClass("selected").siblings().removeClass("selected");
@@ -302,17 +316,22 @@ var Page = {
 		if ( lang === "en" ) {
 
 			console.log( 302, "mobile en" );
+			// PAUSE AND RESET TIME
 			this.videoPlayerHe.pause();
+			this.videoPlayerHe.setCurrentTime(0);
 
 			_.defer( function(){
 				// IF NO PLAYER CREATE PLAYER
 				if ( !self.enPlayer ) {
-					$("#video_en").attr("src", $("#video_en").attr("data-src") );
+					$("#video_en").attr( "src", $("#video_en").attr("data-src") );
 					self.videoPlayerEn = new Vimeo.Player("video_en");
 					self.enPlayer = true;
 				} 
 				$("#video_he").hide();
 				$("#video_en").show();
+
+				self.videoPlayerEn.play();
+
 				// HIGHLIGHT BUTTON
 				$("#lang_en").addClass("selected").siblings().removeClass("selected");
 			});
@@ -321,11 +340,18 @@ var Page = {
 
 			console.log( 317, "mobile he" );
 
-			this.videoPlayerEn.pause();
+			if ( this.videoPlayerEn !== undefined ) {
+				// PAUSE AND RESET TIME
+				this.videoPlayerEn.pause();
+				this.videoPlayerEn.setCurrentTime(0);
+			}
 
 			_.defer( function(){
 				$("#video_en").hide();
 				$("#video_he").show();
+
+				self.videoPlayerHe.play();
+
 				// HIGHLIGHT BUTTON
 				$("#lang_he").addClass("selected").siblings().removeClass("selected");
 			});

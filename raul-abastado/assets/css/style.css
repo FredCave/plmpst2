@@ -57,14 +57,14 @@ table {
 /* line 20, style.scss */
 html, body {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: black;
 }
 
 /* line 26, style.scss */
 #wrapper {
   position: fixed;
-  top: 0;
+  bottom: 0;
   width: 100%;
   height: 100vh;
 }
@@ -79,93 +79,25 @@ html, body {
 #video_wrapper .video {
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
-/* line 43, style.scss */
+/* line 44, style.scss */
 #video_wrapper #video_en {
   display: none;
 }
 
-/* line 48, style.scss */
-#work_nav {
-  position: fixed;
-  height: 96px;
-  bottom: 0;
-  width: 100%;
-  font-family: "Palimpsest", helvetica, arial;
-  font-size: 24px;
-  color: white;
-  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
-  -webkit-transition: text-shadow 0.5s;
-  transition: text-shadow 0.5s;
-  letter-spacing: 0.8px;
-  pointer-events: none;
-}
-/* line 61, style.scss */
-#work_nav .button_left {
-  position: absolute;
-  top: 0;
-  left: 36px;
-}
-/* line 66, style.scss */
-#work_nav #restart_button {
-  height: 32px;
-  width: auto;
-  display: none;
-}
-/* line 71, style.scss */
-#work_nav #restart_button a {
-  margin-right: 16px;
-  pointer-events: auto;
-}
-/* line 74, style.scss */
-#work_nav #restart_button a img {
-  -webkit-filter: drop-shadow(0px 0px 8px white);
-          filter: drop-shadow(0px 0px 8px white);
-  height: 100%;
-  width: auto;
-}
-/* line 80, style.scss */
-#work_nav #restart_button #timer {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: 4px;
-}
-/* line 86, style.scss */
-#work_nav .button_right {
-  position: absolute;
-  top: 0;
-  right: 36px;
-  height: 24px;
-  display: none;
-}
-/* line 92, style.scss */
-#work_nav .button_right .lang {
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 16px;
-  opacity: 0.5;
-  -webkit-transition: opacity 0.5s;
-  transition: opacity 0.5s;
-}
-/* line 98, style.scss */
-#work_nav .button_right .lang a {
-  color: white;
-  text-decoration: none;
-  pointer-events: auto;
-}
-/* line 104, style.scss */
-#work_nav .button_right .selected,
-#work_nav .button_right .lang:hover {
-  opacity: 1;
-}
-
-/* line 111, style.scss */
+/* line 49, style.scss */
 #mobile_wrapper {
   width: 100%;
   height: 100%;
 }
-/* line 114, style.scss */
+/* line 52, style.scss */
 #mobile_wrapper video {
   width: 100%;
   height: calc( 100% - 60px );
+}
+
+/* line 58, style.scss */
+#lang_buttons {
+  display: none;
 }

@@ -2,22 +2,25 @@
 <html <?php language_attributes(); ?> style="margin-top: 0px !important">
 
 <head>
+	<?php 
+	$desc = "Come experience the infinite narratives that comprise Jerusalem — the realistic, the exalted and the virtual as one. Part of Mekudeshet 2017.";
+	?>
 	<title><?php bloginfo('title'); ?></title>
-    <meta name="description" content="<?php bloginfo('description'); ?>">
+    <meta name="description" content="<?php echo $desc; ?>">
 	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta property="og:url" content="<?php bloginfo('url'); ?>" />
     <meta property="og:type" content="Website" />
     <meta property="og:title" content="Jerusalem Palimpsest Online Exhibition" />
-    <meta property="og:description" content="Come experience the infinite narratives that comprise Jerusalem — the realistic, the exalted and the virtual as one. Part of Mekudeshet 2017." />
-    <meta property="og:image" content="<?php if ( function_exists('get_og_image')){ get_og_image(); } ?>" />
+    <meta property="og:description" content="<?php echo $desc; ?>" />
+    <meta property="og:image" content="<?php bloginfo('stylesheet_directory'); ?>/assets/img/jerusalem_palimpsest_share_image.jpg" />
 
     <!-- TWITTER -->
     <meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:site" content="<?php bloginfo('url'); ?>">
-	<meta name="twitter:description" content="Come experience the infinite narratives that comprise Jerusalem — the realistic, the exalted and the virtual as one. Part of Mekudeshet 2017.">
+	<meta name="twitter:description" content="<?php echo $desc; ?>">
 	<meta name="twitter:title" content="Jerusalem Palimpsest Online Exhibition">
-	<meta name="twitter:image" content="<?php if ( function_exists('get_og_image')){ get_og_image(); } ?>">
+	<meta name="twitter:image" content="<?php bloginfo('stylesheet_directory'); ?>/assets/img/jerusalem_palimpsest_share_image.jpg">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 

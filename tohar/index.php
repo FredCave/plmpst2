@@ -3,6 +3,7 @@
 	<?php 	
 	// CHECK IF PAGE WILL BE SHOWN IN BACKGROUND OF ANOTHER PAGE
 	$bg_var = get_query_var('background'); 
+	echo $bg_var;
 	?>
 
 	<div id="wrapper" data-id="1" data-bg="<?php echo $bg_var; ?>">
@@ -89,7 +90,10 @@
 
 		<div id="work_nav">
 			<div id="fullscreen" class="button_right">
-
+				<a href="">
+					<img class="enter_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen.svg" />
+					<img class="exit_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen_exit.svg" />
+				</a>
 			</div>
 		</div>
 

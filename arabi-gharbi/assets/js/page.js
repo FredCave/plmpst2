@@ -8,6 +8,8 @@ var Page = {
 
 		console.log("Page.init");
 
+		this.muteCheck();
+
 		Info.init();
 
 		Webcam.init();
@@ -59,6 +61,16 @@ var Page = {
 			self.contentSize();
 
 		}, 50 ));
+
+	},
+
+	muteCheck: function () {
+
+		console.log("Page.muteCheck");
+
+		if ( $("#wrapper").attr("data-bg") == "true" ) {
+			$("#youtube_playlist").empty();
+		} 
 
 	},
 

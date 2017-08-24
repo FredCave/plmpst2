@@ -42,6 +42,7 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 // CUSTOM URL QUERY
 function palimpsest_register_query_vars( $vars ) {
     $vars[] = 'background';
+    $vars[] = 'mute';
     return $vars;
 }
 add_filter( 'query_vars', 'palimpsest_register_query_vars' ); 

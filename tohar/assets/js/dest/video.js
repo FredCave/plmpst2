@@ -95,14 +95,16 @@ var Video = {
 
                 self.vars["player-" + $(this).attr("id")].setVolume(0);
                 self.vars["player-" + $(this).attr("id")].setAutopause(false);
+                self.vars["player-" + $(this).attr("id")].pause();
 
                 // WORKAROUND TO DETECT END OF VIDEO
                 self.vars["player-" + $(this).attr("id")].on( "timeupdate", _.throttle( function(data){
-                    // console.log( 93, "Time update", $(selfElem).attr("id"), data.percent );
-                    if ( data.percent >= 0.99 ) {
+                    // console.log( 101, "Time update", $(selfElem).attr("id"), data.percent, data.duration, data.seconds );
+                    // CACLULATE TIME LEFT
+                    if ( data.duration - data.seconds < 2 ) {
                         // AND IF THIS IS CURRENT VIDEO
-                        var playerId = $(selfElem).attr("id").substr(-1);
-                        console.log( 98, "Video ended", playerId, " current: ", self.currentVideo );
+                        var playerId = $(selfElem).attr("id").split("-")[1];
+                        // console.log( 98, "Video ended", playerId, " current: ", self.currentVideo );
                         if ( parseInt(playerId) === self.currentVideo ) {
                             self.changeVideo("next");
                         }
@@ -116,22 +118,17 @@ var Video = {
             this.currentVideo = 1;
             this.playVideo( this.vars["player-video-1"] );
 
-            // TMP –> CAPTIONS????
-            // this.vars["player-video-1"].getTextTracks().then( function(tracks) {
-            //     console.log( 117, tracks );
-            // });
-
             this.loadNextPrev();
 
             // SHOW ARROWS AFTER 10 SECONDS
-            _.delay( function(){
-                
-                $("#arrows").fadeIn( 1000 );
+                // IF MOBILE: NO DELAY
+            var delayTime = 10000;
 
+            _.delay( function(){
+                $("#arrows").fadeIn( 1000 );
                 // LOAD + SHOW COUNTER
                 // $("#counter").text("1/"+ self.noVideos).fadeIn( 1000 );
-
-            }, 10000 );
+            }, delayTime );
 
         }
 
@@ -345,10 +342,10 @@ var Video = {
         });
         this.currentVideo = 1;
 
-        // SHOW ARROWS AFTER 10 SECONDS
+        // SHOW ARROWS AFTER 0.5 SECONDS
         _.delay( function(){
             $("#arrows").fadeIn( 1000 );
-        }, 10000 );    
+        }, 500 );    
 
         // this.mobileLoadNextPrev( thisId );
 

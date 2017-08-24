@@ -36,6 +36,15 @@
 						<div id="lang_en"><a href="">En</a></div>
 					</div> */ ?>
 
+					<div class="button_right">
+						<div id="fullscreen">
+							<a href="">
+								<img class="enter_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen.svg" />
+								<img class="exit_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen_exit.svg" />
+							</a>
+						</div>
+					</div>	
+
 				</div>
 
 				<?php 
@@ -48,8 +57,8 @@
 	<?php
 	// IF NOT BACKGROUND
 	if ( !$bg_var ) { 
-		$title = "Untitled";
-		$artist = "Daniella Maroz";
+		$title = "Family Portrait 95x67";
+		$artist = "Daniella Meroz";
 		include_once( get_template_directory() . '/includes/artist_info.php' );
 		include_once( get_template_directory() . '/includes/main_info.php' );
 	}

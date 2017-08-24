@@ -36,6 +36,12 @@
 					<div id="lang_buttons" class="button_right">
 						<div id="lang_he" class="lang selected"><a href="" data-lang="he">He</a></div>
 						<div id="lang_en" class="lang"><a href="" data-lang="en">En</a></div>
+						<div id="fullscreen">
+							<a href="">
+								<img class="enter_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen.svg" />
+								<img class="exit_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen_exit.svg" />
+							</a>
+						</div>
 					</div>
 
 				</div>
@@ -50,8 +56,8 @@
 	<?php
 	// IF NOT BACKGROUND
 	if ( !$bg_var ) { 
-		$title = "Raul Abastado #345";
-		$artist = "Nitai schendar and Itamar Weiss";
+		$title = "Path No. 345";
+		$artist = "Raul Abastado";
 		include_once( get_template_directory() . '/includes/artist_info.php' );
 		include_once( get_template_directory() . '/includes/main_info.php' );
 	}

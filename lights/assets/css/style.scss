@@ -22,17 +22,17 @@ html, body {
 	background-color: black;
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
+	// overflow: hidden;
 }
 
 #wrapper {
 	background-color: black;
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	left: 0;
 	width: 100%;
 	height: 100vh;
-	display: none;
+	// display: none;
 }
 
 .lights_image {
@@ -47,11 +47,23 @@ html, body {
 	background-repeat: no-repeat;
 	opacity: 0;
 	transition: opacity 1s;	
+	mix-blend-mode: lighten;
 /*	cursor: url("img/cursor_128.png");*/
+}
+
+.visible {
+	opacity: 1;
+	transition: opacity 1s;
+}
+
+.invisible {
+	opacity: 0;
+	transition: opacity 2s;	
 }
 
 #wrapper #dark_image {
 	opacity: 1;
+	mix-blend-mode: normal;
 }
 
 #mobile_wrapper {

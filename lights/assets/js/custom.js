@@ -13,7 +13,7 @@ var Page = {
 			$("#mobile_wrapper").fadeIn(1000);
 		} else {
 			$("#wrapper").fadeIn(1000);
-			this.audioInit();
+			this.audioInit();				
 		}
 
 		this.bindEvents();
@@ -78,7 +78,7 @@ var Page = {
 
 		console.log("Page.audioInit");
 
-		console.log( 85, $("#wrapper").attr("data-bg") );
+		// MUTE IF IN BACKGROUND
 		if ( $("#wrapper").attr("data-bg") === "true" ) {
 			return;
 		}
@@ -104,8 +104,11 @@ var Page = {
 
 		console.log("Page.leftFadeIn");
 
-		$("#west_image").css({"opacity": "1"});
-		$("#east_image").css({"opacity": "0"});
+		// $("#west_image").css({"opacity": "1"});
+		// $("#east_image").css({"opacity": "0"});
+
+		$("#west_image").addClass("visible").removeClass("invisible");
+		$("#east_image").addClass("invisible").removeClass("visible");
 
 	},
 
@@ -113,8 +116,11 @@ var Page = {
 
 		console.log("Page.rightFadeIn");
 
-		$("#east_image").css({"opacity": "1"});
-		$("#west_image").css({"opacity": "0"});
+		// $("#east_image").css({"opacity": "1"});
+		// $("#west_image").css({"opacity": "0"});
+
+		$("#east_image").addClass("visible").removeClass("invisible");
+		$("#west_image").addClass("invisible").removeClass("visible");
 
 	},
 
@@ -122,8 +128,11 @@ var Page = {
 
 		console.log("Page.allFadeOut");
 
-		$("#east_image").css({"opacity": "0"});
-		$("#west_image").css({"opacity": "0"});		
+		// $("#east_image").css({"opacity": "0"});
+		// $("#west_image").css({"opacity": "0"});	
+
+		$("#west_image").removeClass("visible");
+		$("#east_image").removeClass("visible");	
 
 	}
 

@@ -40,10 +40,29 @@
 
 	</div>
 
+	<div id="work_nav">
+		
+		<div id="lang_buttons" class="button_right">
+			<div id="fullscreen">
+				<a href="">
+					<img class="enter_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen.svg" />
+					<img class="exit_fullscreen" src="<?php bloginfo('template_url'); ?>/assets/img/icon_fullscreen_exit.svg" />
+				</a>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="mobile_background_video">
+		<video muted autoplay playsinline loop>
+			<source data-src="<?php bloginfo('stylesheet_directory'); ?>/assets/media/background_video.mp4" />
+		</video>
+	</div>
+
 	<?php 
 	// IF NOT BACKGROUND
 	if ( !$bg_var ) {
-		$title = "Untitled";
+		$title = "Yonderer";
 		$artist = "Eran Hilleli";
 		include_once( get_template_directory() . '/includes/artist_info.php' );
 		include_once( get_template_directory() . '/includes/main_info.php' );

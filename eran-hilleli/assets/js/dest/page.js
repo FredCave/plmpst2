@@ -15,7 +15,13 @@ var Page = {
 		this.imagesCalc();
 		this.imagesInit();
 
-		this.audioInit();
+		// FIX CHROME BUG
+		if ( Info.chromeDetect() ) {
+			$("body").css({
+				"position" : "static",
+				"overflow" : "auto"
+			});
+		}
 
 		// FADE OUT SCROLL TO START
 		setTimeout( function(){	
@@ -32,10 +38,11 @@ var Page = {
 
 		$(window).on("mousewheel DOMMouseScroll wheel", _.throttle( function(e) {
 
-		    // e.preventDefault();
+			// console.log( 35 );
+		    e.preventDefault();
 			self.scrollManager(e.originalEvent);		
 
-		}, 100 ));
+		}, 10 ));
 
 		// MOBILE: TOUCHMOVE 
 		$(window).on('touchstart', function(e) {
@@ -95,15 +102,11 @@ var Page = {
 				imgW = self.winH * imgRatio;
 			}
 
-			if ( imgW <= 400 ) {
-				imgSrc = $(this).attr("data-tmb");
-			} else if ( imgW > 400 && imgW <= 600 ) {
-				imgSrc = $(this).attr("data-med");
-			} else if ( imgW > 600 && imgW <= 768 ) {
+			if ( imgW <= 600 ) {
 				imgSrc = $(this).attr("data-mlg");
-			} else if ( imgW > 768 && imgW <= 900 ) {
+			} else if ( imgW > 600 && imgW <= 768 ) {
 				imgSrc = $(this).attr("data-lrg");
-			} else if ( imgW > 900 && imgW <= 1200 ) {
+			} else if ( imgW > 768 && imgW <= 900 ) {
 				imgSrc = $(this).attr("data-xlg");
 			} else {
 				imgSrc = $(this).attr("data-ulg");
@@ -122,30 +125,25 @@ var Page = {
 
 	}, 
 
-	audioInit: function () {
-
-		console.log("Page.audioInit");
-
-	},
-
 	scrollManager: function ( oe ) {
 
 		console.log("Page.scrollManager");
 
-		console.log( 100, oe );
-
+		// console.log( 100, oe.deltaY );
+		var detail;
 		if ( oe.wheelDelta ) {
 	        delta = -oe.wheelDelta;
 	    }
 	    if ( oe.detail ) {
 	        delta = oe.detail * 40;
 	    }
-	    if ( delta > 10 ) {
-	    	// this.imageNext();
-	     	this.imagePrev();
-	    } else if ( delta < -10 ) {
-	    	// this.imagePrev();	
+
+	    console.log( 141, delta );
+
+	    if ( delta > 40 ) {
 	    	this.imageNext();
+	    } else if ( delta < -40 ) {
+	    	this.imagePrev();	
 	    }
 
 	}, 
@@ -169,10 +167,10 @@ var Page = {
 		console.log("Info.imagePrev");
 
 		if ( $(".visible").prev().length ) {
-			console.log(144);
+			// console.log(144);
 			$(".visible").removeClass("visible").prev().addClass("visible");
 		} else {
-			console.log(147);
+			// console.log(147);
 			// BACK TO START
 			$(".visible").removeClass("visible");
 			$(".scroll_image").last().addClass("visible");
